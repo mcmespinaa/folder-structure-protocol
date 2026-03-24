@@ -4,6 +4,21 @@ A Claude skill that evaluates any project's folder architecture against a three-
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI), [Claude.ai](https://claude.ai) (Cowork), the [Claude API](https://platform.claude.com/docs/en/build-with-claude/skills-guide), and the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview). The methodology also works for any AI coding tool or manual project organization.
 
+## Why This Matters
+
+AI coding tools are only as good as the context they receive. When Claude Code opens your project, it needs to figure out where things are, what conventions to follow, and which files matter for the current task. If your folder structure is disorganized, Claude wastes tokens guessing, reads the wrong files, produces inconsistent output, or ignores your instructions entirely.
+
+Most developers blame the model when output quality drops. But the real problem is usually structural:
+
+- **Wrong format?** Missing naming conventions -- Claude improvises a pattern.
+- **Off-topic output?** No routing table -- Claude loaded the wrong context file (or none at all).
+- **Ignoring instructions?** Your CLAUDE.md is 200 lines and the real rules are buried at line 180.
+- **Inconsistent across sessions?** No CONTEXT.md files -- every session starts from scratch.
+
+**60% of AI output quality comes from traditional folder structure** (naming, organization, file grouping). Another 30% comes from routing (CLAUDE.md, CONTEXT.md, conventions). Only 10% comes from the AI interaction itself. This skill audits the 90% you can actually control.
+
+It also matters for humans. A well-structured project is easier to navigate, onboard into, and maintain -- with or without AI. The three-layer system this audit checks isn't just for Claude; it's good project hygiene that happens to make AI tools dramatically more effective.
+
 ## What It Does
 
 When you run `/folder-audit` on a project, it:
@@ -16,6 +31,8 @@ When you run `/folder-audit` on a project, it:
 3. **Checks 7 anti-patterns** -- oversized configs, missing routing, flat dumps, stale context, etc.
 4. **Measures 5 structural metrics** -- depth ratio, file density, naming consistency, convention coverage, context-to-content ratio
 5. **Generates a graded report** with a letter grade (A/B/C/F) and top 3 prioritized fixes
+6. **Imprints structure rules** into the audited project's CLAUDE.md -- so every future Claude session follows the folder conventions automatically
+7. **Escalates to skill creation** when repeated friction is found -- recommends building a skill via the [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) workflow
 
 ## Quick Start
 
@@ -217,6 +234,25 @@ When fixing audit findings, prioritize:
 
 Fix the 60% first. No amount of prompt engineering compensates for bad structure.
 
+## Run Once, Remember Forever
+
+The audit doesn't just produce a report -- it can **imprint** structural rules directly into the audited project's CLAUDE.md. This means:
+
+1. You run `/folder-audit` once on a project
+2. The skill generates the report and scores
+3. It offers to write a `## Structure Rules` section into that project's CLAUDE.md
+4. Every future Claude session in that project reads those rules and follows them automatically
+
+The imprinted rules are generated from your actual audit findings -- not a generic template. They include naming conventions, folder boundaries, file placement mappings, and folder creation guidelines. They're kept under 30 lines and dated so you can see when they go stale.
+
+Projects that score A (15-16) skip imprinting -- they're already self-documenting.
+
+### When friction repeats
+
+If the audit finds the same manual process showing up multiple times (e.g., the same file type created by hand repeatedly, or a multi-step procedure described in multiple CONTEXT.md files), it recommends creating a dedicated skill using the [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) workflow. The audit identifies *what* to automate; skill-creator handles *how* to build it.
+
+The audit will never auto-create skills. Layer 3 should be a conscious decision, not an audit side-effect -- otherwise you'd trigger anti-pattern #7 (built before used).
+
 ## Project Structure
 
 ```
@@ -239,7 +275,7 @@ folder-audit/
 
 | File | Purpose | You need it? |
 |------|---------|-------------|
-| `.claude/skills/folder-audit/SKILL.md` | The executable audit skill -- 8-step procedure with scoring rubrics, anti-pattern checklist, metrics, and report template | **Yes** -- this is the skill |
+| `.claude/skills/folder-audit/SKILL.md` | The executable audit skill -- 10-step procedure with scoring rubrics, anti-pattern checklist, metrics, report template, structure imprinting, and skill escalation | **Yes** -- this is the skill |
 | `CLAUDE.md` | Root routing config for this project | Only if cloning the full repo |
 | `File-tree audit/CONTEXT.md` | Workspace context for the audit methodology | Only if cloning the full repo |
 | `File-tree audit/Playbook - *.md` | Deep methodology reference -- scoring rationale, anti-pattern details, structural metric formulas | Optional -- for understanding the "why" |
