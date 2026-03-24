@@ -15,9 +15,11 @@ Most developers blame the model when output quality drops. But the real problem 
 - **Ignoring instructions?** Your CLAUDE.md is 200 lines and the real rules are buried at line 180.
 - **Inconsistent across sessions?** No CONTEXT.md files -- every session starts from scratch.
 
-**60% of AI output quality comes from traditional folder structure** (naming, organization, file grouping). Another 30% comes from routing (CLAUDE.md, CONTEXT.md, conventions). Only 10% comes from the AI interaction itself. This skill audits the 90% you can actually control.
+**Most AI output quality comes from what happens before the AI runs.** Industry data backs this up: [44–65% of developers](https://www.qodo.ai/reports/state-of-ai-code-quality/) blame missing context — not bad prompts — for poor AI-generated code. Adding routing files like AGENTS.md [cuts agent runtime by 29%](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html). Anthropic's own guidance frames the core challenge as ["curating what enters the model's attention budget"](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), not crafting the perfect prompt.
 
-It also matters for humans. A well-structured project is easier to navigate, onboard into, and maintain -- with or without AI. The three-layer system this audit checks isn't just for Claude; it's good project hygiene that happens to make AI tools dramatically more effective.
+We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is a teaching shorthand, not an empirical measurement — but the direction is well-established. This skill audits the 90% you can actually control.
+
+It also matters for humans. A well-structured project is easier to navigate, onboard into, and maintain — with or without AI. The three-layer system this audit checks isn't just for Claude; it's good project hygiene that happens to make AI tools dramatically more effective.
 
 ## What It Does
 
@@ -47,7 +49,7 @@ There are four ways to install, from lightest to most complete:
 # From your project root
 mkdir -p .claude/skills/folder-audit
 curl -o .claude/skills/folder-audit/SKILL.md \
-  https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
+  https://raw.githubusercontent.com/mcmespinaa/folder-structure-protocol/main/.claude/skills/folder-audit/SKILL.md
 ```
 
 Then run `/folder-audit` in Claude Code. The skill is scoped to this project only.
@@ -57,7 +59,7 @@ Then run `/folder-audit` in Claude Code. The skill is scoped to this project onl
 ```bash
 mkdir -p ~/.claude/skills/folder-audit
 curl -o ~/.claude/skills/folder-audit/SKILL.md \
-  https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
+  https://raw.githubusercontent.com/mcmespinaa/folder-structure-protocol/main/.claude/skills/folder-audit/SKILL.md
 ```
 
 Now `/folder-audit` works in any project you open with Claude Code.
@@ -68,7 +70,7 @@ Claude Code supports [plugins](https://code.claude.com/docs/en/plugins) -- reusa
 
 ```bash
 # Add as a plugin from the GitHub URL
-claude plugin add https://github.com/mcmespinaa/folder-audit.git
+claude plugin add https://github.com/mcmespinaa/folder-structure-protocol.git
 ```
 
 Or reference it in your project's `.claude/plugins.json`:
@@ -76,7 +78,7 @@ Or reference it in your project's `.claude/plugins.json`:
 ```json
 {
   "plugins": [
-    "https://github.com/mcmespinaa/folder-audit.git"
+    "https://github.com/mcmespinaa/folder-structure-protocol.git"
   ]
 }
 ```
@@ -86,7 +88,7 @@ Plugin skills use a namespaced command: `/folder-audit:folder-audit`.
 **Option D: Clone the full repo**
 
 ```bash
-git clone https://github.com/mcmespinaa/folder-audit.git
+git clone https://github.com/mcmespinaa/folder-structure-protocol.git
 cd folder-audit
 ```
 
@@ -98,7 +100,7 @@ Custom skills work on Claude.ai on Pro, Max, Team, and Enterprise plans with cod
 
 1. **Download and zip** the skill:
    ```bash
-   git clone https://github.com/mcmespinaa/folder-audit.git
+   git clone https://github.com/mcmespinaa/folder-structure-protocol.git
    cd folder-audit/.claude/skills
    zip -r folder-audit.zip folder-audit/
    ```
@@ -136,7 +138,7 @@ See the [API Skills Guide](https://platform.claude.com/docs/en/build-with-claude
 # Place the skill in your project
 mkdir -p .claude/skills/folder-audit
 curl -o .claude/skills/folder-audit/SKILL.md \
-  https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
+  https://raw.githubusercontent.com/mcmespinaa/folder-structure-protocol/main/.claude/skills/folder-audit/SKILL.md
 ```
 
 Include `"Skill"` in your `allowed_tools` configuration. The SDK auto-discovers skills from `.claude/skills/`. See the [Agent SDK Skills docs](https://platform.claude.com/docs/en/agent-sdk/skills) for details.
@@ -232,6 +234,13 @@ When fixing audit findings, prioritize:
 - **60%** of value comes from traditional structure (folders, naming, files)
 - **30%** from routing and rules (CLAUDE.md, CONTEXT.md, conventions)
 - **10%** from the AI interactions themselves
+
+The ratio is a prioritization heuristic, not a measured quantity. The directional claim — that structure and context dominate over prompting — is supported by:
+
+- [Qodo State of AI Code Quality 2025](https://www.qodo.ai/reports/state-of-ai-code-quality/): 44–65% of developers cite missing context as the primary cause of poor AI output
+- [Martin Fowler / Thoughtworks](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html): AGENTS.md files reduced coding agent median runtime by 29%
+- [Anthropic](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents): "The challenge isn't crafting the perfect prompt — it's curating what enters the model's attention budget"
+- [Chroma Research](https://research.trychroma.com/context-rot): More context tokens can degrade performance; structured, relevant context matters more than volume
 
 Fix the 60% first. No amount of prompt engineering compensates for bad structure.
 
