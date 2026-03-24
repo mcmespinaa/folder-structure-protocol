@@ -1,6 +1,6 @@
 # Folder Structure
 
-Tools, playbooks, and audits for evaluating project folder architecture against the three-layer routing system.
+Tools, playbooks, and audits for evaluating project folder architecture against the ICM five-layer context hierarchy.
 
 ## Workspaces
 

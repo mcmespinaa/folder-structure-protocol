@@ -41,6 +41,7 @@ If any section is missing, halt and report the gap:
 - Missing Inputs: "Stage {NN} has no Inputs table. Add one to its CONTEXT.md before running."
 - Missing Process: "Stage {NN} has no Process section. The contract must specify what to do."
 - Missing Outputs: "Stage {NN} has no Outputs section. Declare what this stage produces."
+- Missing Review Checkpoint: Warn the user ("Stage {NN} has no Review Checkpoint — the human review pause in Step 6 will have no criteria to display. Consider adding one.") but proceed with execution. The checkpoint is not required to run, but its absence weakens the review gate.
 
 ### Step 3: Load Inputs (Scoped Context)
 

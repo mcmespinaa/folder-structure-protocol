@@ -1,12 +1,12 @@
 # File-Tree Audit — Context
 
-This workspace holds the methodology and results for evaluating project folder architecture. Audits score projects against the three-layer routing system (Map, Rooms, Tools) and produce graded reports with prioritized fixes.
+This workspace holds the methodology and results for evaluating project folder architecture. Audits score projects against the ICM five-layer context hierarchy — base audit covers Layer 0 (Map/CLAUDE.md), Layer 1 (Rooms/CONTEXT.md), and Tools; extended ICM assessment covers Layers 2–4 (Stage Contracts, References, Working Artifacts). Reports include graded scores with prioritized fixes.
 
 ## What Happens Here
 
 1. Pick a target project to audit
 2. Run the `folder-audit` skill (`.claude/skills/folder-audit/SKILL.md`)
-3. The skill generates a file tree snapshot, scores 3 layers, checks 7 anti-patterns, measures 5 structural metrics
+3. The skill generates a file tree snapshot, scores Layers 0–1 + Tools, checks 8 anti-patterns, measures 5 structural metrics
 4. Output: a graded audit report saved to `audits/`
 5. **Imprint:** The skill offers to write structure rules into the audited project's CLAUDE.md — so future Claude sessions follow the structure automatically
 6. **Escalate:** If repeated friction is found, the skill recommends creating a new skill via the skill-creator workflow
@@ -23,7 +23,7 @@ This workspace holds the methodology and results for evaluating project folder a
 ## What to Avoid
 
 - Skipping sections of the report template
-- Scoring Layer 3 as a penalty on new projects (use N/A)
+- Scoring Tools as a penalty on new projects (use N/A)
 - Recommending more tooling when the structure itself is broken
 - Auditing without first generating the file tree snapshot
 
