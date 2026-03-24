@@ -19,7 +19,7 @@ Most developers blame the model when output quality drops. But the real problem 
 
 **Most AI output quality comes from what happens before the AI runs.** Industry data backs this up: 44–65% of developers blame missing context — not bad prompts — for poor AI-generated code (Qodo, 2025). Adding routing files like AGENTS.md cuts agent runtime by 29% (Sherwood, 2025). Anthropic's own guidance frames the core challenge as "curating what enters the model's attention budget," not crafting the perfect prompt (Schluntz et al., 2025).
 
-We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is a teaching shorthand, not an empirical measurement — but the direction is well-established. Fix the 90% you can actually control.
+We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is a teaching shorthand, not an empirical measurement, but the direction is well-established (Van Clief, 2026). Fix the 90% you can actually control.
 
 It also matters for humans. A well-structured project is easier to navigate, onboard into, and maintain — with or without AI.
 
