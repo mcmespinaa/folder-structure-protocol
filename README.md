@@ -21,7 +21,9 @@ When you run `/folder-audit` on a project, it:
 
 ### Claude Code (CLI)
 
-**Option A: Copy the skill into your project**
+There are four ways to install, from lightest to most complete:
+
+**Option A: One-command install (project-level)**
 
 ```bash
 # From your project root
@@ -30,75 +32,96 @@ curl -o .claude/skills/folder-audit/SKILL.md \
   https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
 ```
 
-Then in Claude Code:
+Then run `/folder-audit` in Claude Code. The skill is scoped to this project only.
 
+**Option B: Global install (available in every project)**
+
+```bash
+mkdir -p ~/.claude/skills/folder-audit
+curl -o ~/.claude/skills/folder-audit/SKILL.md \
+  https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
 ```
-/folder-audit
+
+Now `/folder-audit` works in any project you open with Claude Code.
+
+**Option C: Use as a plugin (shareable across teams)**
+
+Claude Code supports [plugins](https://code.claude.com/docs/en/plugins) -- reusable packages that can include skills. To use this repo as a plugin:
+
+```bash
+# Add as a plugin from the GitHub URL
+claude plugin add https://github.com/mcmespinaa/folder-audit.git
 ```
 
-Claude will ask which project to audit (or audit the current one).
+Or reference it in your project's `.claude/plugins.json`:
 
-**Option B: Clone the full repo**
+```json
+{
+  "plugins": [
+    "https://github.com/mcmespinaa/folder-audit.git"
+  ]
+}
+```
+
+Plugin skills use a namespaced command: `/folder-audit:folder-audit`.
+
+**Option D: Clone the full repo**
 
 ```bash
 git clone https://github.com/mcmespinaa/folder-audit.git
 cd folder-audit
 ```
 
-This gives you the skill, the methodology playbook, example audit reports, and the CLAUDE.md routing setup.
+This gives you the skill, the methodology playbook, example audit reports, and the CLAUDE.md routing setup. Best if you want to customize the methodology or contribute.
 
-**Option C: Install as a global skill**
+### Claude.ai (Web / Cowork)
 
-```bash
-# Copy to your global Claude Code skills directory
-mkdir -p ~/.claude/skills/folder-audit
-curl -o ~/.claude/skills/folder-audit/SKILL.md \
-  https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
-```
+Custom skills work on Claude.ai on Pro, Max, Team, and Enterprise plans with code execution enabled.
 
-This makes `/folder-audit` available in every project.
-
-### Claude.ai (Cowork)
-
-Custom skills work in Claude.ai on Pro, Max, Team, and Enterprise plans with code execution enabled.
-
-1. **Download** the `SKILL.md` file from this repo (or clone and zip the `.claude/skills/folder-audit/` folder)
-2. **Create a zip** containing the skill directory structure:
+1. **Download and zip** the skill:
    ```bash
-   # From the repo root
-   cd .claude/skills
+   git clone https://github.com/mcmespinaa/folder-audit.git
+   cd folder-audit/.claude/skills
    zip -r folder-audit.zip folder-audit/
    ```
-3. **Upload** in Claude.ai: go to **Settings > Features > Custom Skills** and upload `folder-audit.zip`
-4. **Use it** in any conversation. Claude will automatically trigger the skill when you ask it to audit a folder structure. You can also prompt it directly:
+   Or download just the `SKILL.md` file, place it in a `folder-audit/` directory, and zip that.
+
+2. **Upload** in Claude.ai: go to **Settings > Features > Custom Skills** and upload `folder-audit.zip`
+
+3. **Use it** in any conversation. Upload your project folder (or zip it and attach it) so Claude can read the file tree, then ask:
    ```
    Audit the folder structure of this project
    ```
 
-**Important notes for Cowork:**
-- The skill needs access to your project files. Share your project folder or zip with Claude in the conversation so it can read the file tree.
-- Network access varies by your admin settings. The skill itself needs no network -- it only reads files.
-- Custom skills on Claude.ai are per-user. Each team member needs to upload separately.
+**Notes for Claude.ai:**
+- Claude needs access to your project files to audit them. Attach your project as a zip or share the relevant files in the conversation.
+- The skill only reads files -- no network access needed.
+- Custom skills are per-user. Each team member uploads separately.
+- Skills don't sync across surfaces (uploading to Claude.ai doesn't make it available in Claude Code or the API).
 
 ### Claude API
 
-Skills work via the API with the code execution container. You'll need three beta headers:
+Skills work via the API with the code execution container. Three beta headers are required:
 
 ```
 anthropic-beta: code-execution-2025-08-25,skills-2025-10-02,files-api-2025-04-14
 ```
 
-Upload the skill using the `/v1/skills` endpoint, then reference it in your requests via the `container.skills` parameter. See the [API Skills Guide](https://platform.claude.com/docs/en/build-with-claude/skills-guide) for full setup.
+1. Upload the skill using the `/v1/skills` endpoint
+2. Reference it in your requests via the `container.skills` parameter
+
+See the [API Skills Guide](https://platform.claude.com/docs/en/build-with-claude/skills-guide) for full setup.
 
 ### Claude Agent SDK
 
 ```bash
 # Place the skill in your project
 mkdir -p .claude/skills/folder-audit
-# Copy SKILL.md into the directory
+curl -o .claude/skills/folder-audit/SKILL.md \
+  https://raw.githubusercontent.com/mcmespinaa/folder-audit/main/.claude/skills/folder-audit/SKILL.md
 ```
 
-Include `"Skill"` in your `allowed_tools` configuration. The SDK auto-discovers skills from `.claude/skills/`.
+Include `"Skill"` in your `allowed_tools` configuration. The SDK auto-discovers skills from `.claude/skills/`. See the [Agent SDK Skills docs](https://platform.claude.com/docs/en/agent-sdk/skills) for details.
 
 ## Usage
 
