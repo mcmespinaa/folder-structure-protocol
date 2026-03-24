@@ -211,11 +211,118 @@ Do NOT auto-create skills. Layer 3 should always be a conscious decision, not an
 
 ---
 
+### Step 11: MWP Pipeline Audit (Conditional)
+
+**When to run:** Only if the file tree from Step 1 shows numbered stage folders (e.g., `01_research/`, `02_script/`, `03_production/`) or a `stages/` directory. These indicate the project follows Model Workspace Protocol (MWP) — a method that uses folder structure as agent orchestration. If no stage folders are found, skip this step entirely and note "MWP: Not detected" in the report.
+
+MWP extends the three-layer system into a five-layer context hierarchy. The base audit (Steps 2-4) covers Layers 0-1 well but cannot evaluate Layers 2-4, which are where MWP's value lives. This step fills that gap.
+
+#### 11a: Score Stage Contracts (MWP Layer 2)
+
+For each numbered stage folder, check for a CONTEXT.md that functions as a stage contract. Score each criterion 0 or 1, then average across stages:
+
+| # | Criterion | Check |
+|---|-----------|-------|
+| 1 | Stage CONTEXT.md exists | One per numbered stage folder |
+| 2 | Inputs table present | Lists specific files with Layer 3 (reference) vs Layer 4 (working) labels |
+| 3 | Process section defined | Clear instructions for what the stage does |
+| 4 | Outputs section defined | Names the output files and their destination (e.g., `-> output/`) |
+| 5 | Single responsibility | Stage does one job — not research AND scripting in the same stage |
+| 6 | Scoped context | Stage only references files it needs, not everything in the workspace |
+
+**Stage Contracts Score: X/6**
+
+#### 11b: Score Reference/Working Separation (MWP Layers 3-4)
+
+Check whether the project distinguishes stable reference material from per-run working artifacts:
+
+| # | Criterion | Check |
+|---|-----------|-------|
+| 1 | Reference folders exist | `references/`, `_config/`, or `shared/` directories present |
+| 2 | Output folders exist | `output/` directory per stage for working artifacts |
+| 3 | Reference files are stable | Files in reference folders don't change between runs (no dated output mixed in) |
+| 4 | Output files are per-run | Output folders contain artifacts from pipeline execution, not configuration |
+| 5 | Stage inputs distinguish types | CONTEXT.md Inputs table labels which files are reference vs working |
+| 6 | Factory configured once | `_config/` or `setup/` folder holds workspace-wide settings (voice, style, conventions) |
+
+**Reference/Working Score: X/6**
+
+#### 11c: Score Pipeline Architecture
+
+Check the structural properties of the stage pipeline:
+
+| # | Criterion | Check |
+|---|-----------|-------|
+| 1 | Stages are numbered | Folders use numeric prefixes that encode execution order |
+| 2 | Handoffs are file-based | Output of stage N is readable as input to stage N+1 |
+| 3 | No stage reads everything | Each stage loads scoped context, not the entire workspace |
+| 4 | Review gates are possible | Human can inspect and edit output/ before the next stage runs |
+| 5 | Incremental re-run supported | Can re-run stage N without re-running stages 1 through N-1 |
+| 6 | Pipeline is self-documenting | Reading CONTEXT.md files top to bottom explains the entire workflow |
+
+**Pipeline Score: X/6**
+
+#### 11d: MWP Anti-Patterns
+
+| # | Anti-Pattern | Found? |
+|---|-------------|--------|
+| 1 | Monolithic stage (one stage does everything) | |
+| 2 | Missing output folders (stages write to random locations) | |
+| 3 | Mixed reference and working files (config and output in same folder) | |
+| 4 | No Inputs table (stage CONTEXT.md doesn't specify what to load) | |
+| 5 | Circular dependencies (stage N reads from stage N+2) | |
+| 6 | Over-staged (trivial steps split into separate stages unnecessarily) | |
+
+#### 11e: Calculate MWP Score
+
+| Component | Score | Max |
+|-----------|-------|-----|
+| Stage Contracts (11a) | X | 6 |
+| Reference/Working (11b) | X | 6 |
+| Pipeline Architecture (11c) | X | 6 |
+| **MWP Total** | **X** | **18** |
+
+MWP Grading: A = 16-18, B = 11-15, C = 6-10, F = 0-5
+
+#### 11f: Incorporate into Report
+
+Add an `## MWP Pipeline Assessment` section to the report after Structural Metrics:
+
+```markdown
+## MWP Pipeline Assessment
+
+**Detected:** Yes — [N] stages found
+**MWP Score:** X/18 ([Grade])
+
+| Component | Score | Max | Grade |
+|-----------|-------|-----|-------|
+| Stage Contracts | X | 6 | [A/B/C/F] |
+| Reference/Working Separation | X | 6 | [A/B/C/F] |
+| Pipeline Architecture | X | 6 | [A/B/C/F] |
+
+### MWP Anti-Patterns Found
+[List each found with a one-line fix]
+
+### Stage-by-Stage Assessment
+[For each stage: what its contract says, whether inputs/outputs are clean, any issues]
+```
+
+The MWP score is reported **separately** from the base score (X/16). The two are complementary:
+- Base score tells you if the project is well-organized for any AI tool
+- MWP score tells you if the pipeline architecture is well-structured for staged workflows
+
+A project can score A on the base audit and F on MWP (good structure, bad pipeline), or vice versa. Both matter.
+
+---
+
 ## What NOT to Penalize
 
 - No Layer 3 on a new project (premature tooling is worse than none)
 - Simple projects with only 1-2 workspaces (not every project needs four)
 - Missing "What to Avoid" if the project is in early exploration
 - Lack of frontmatter if the project doesn't use Obsidian
+- No MWP structure on a non-pipeline project (MWP is for sequential staged workflows, not every project)
+- Only 2-3 stages in a pipeline (fewer well-defined stages beat many thin ones)
+- Missing `_config/` folder if reference material lives in stage-local `references/` directories (both are valid)
 
 For full methodology background, scoring rationale, and the 60/30/10 rule, see the Playbook: `File-tree audit/Playbook - Folder Architecture Evaluation.md`

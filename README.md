@@ -33,6 +33,7 @@ When you run `/folder-audit` on a project, it:
 5. **Generates a graded report** with a letter grade (A/B/C/F) and top 3 prioritized fixes
 6. **Imprints structure rules** into the audited project's CLAUDE.md -- so every future Claude session follows the folder conventions automatically
 7. **Escalates to skill creation** when repeated friction is found -- recommends building a skill via the [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) workflow
+8. **MWP pipeline audit** (conditional) -- if numbered stage folders are detected, runs an extended assessment of stage contracts, reference/working separation, and pipeline architecture (scored separately, X/18)
 
 ## Quick Start
 
@@ -253,6 +254,31 @@ If the audit finds the same manual process showing up multiple times (e.g., the 
 
 The audit will never auto-create skills. Layer 3 should be a conscious decision, not an audit side-effect -- otherwise you'd trigger anti-pattern #7 (built before used).
 
+## MWP Pipeline Projects
+
+If your project uses numbered stage folders (`01_research/`, `02_script/`, `03_production/`) or follows the [Model Workspace Protocol](https://github.com/RinDig/Model-Workspace-Protocol-MWP-), the audit automatically detects this and runs an extended assessment.
+
+MWP extends the three-layer system into a five-layer context hierarchy that handles sequential, human-reviewed AI workflows. The base audit covers Layers 0-1 well but can't evaluate the stage-level architecture that makes MWP work. The extended assessment fills that gap:
+
+| Component | What it checks | Max score |
+|-----------|---------------|-----------|
+| Stage Contracts | Each stage has a CONTEXT.md with Inputs/Process/Outputs, single responsibility, scoped context | 6 |
+| Reference/Working Separation | Stable reference material (`references/`, `_config/`) is separated from per-run working artifacts (`output/`) | 6 |
+| Pipeline Architecture | Numbered stages, file-based handoffs, review gates, incremental re-run support, self-documenting flow | 6 |
+| **MWP Total** | | **18** |
+
+The MWP score is reported **separately** from the base score. A project can score A on structure (16/16) and F on pipeline architecture (3/18), or vice versa. Both matter for their respective contexts.
+
+### MWP anti-patterns
+
+The extended audit checks for six pipeline-specific anti-patterns:
+- Monolithic stage (one stage does everything)
+- Missing output folders (stages write to random locations)
+- Mixed reference and working files in the same folder
+- No Inputs table in stage contracts
+- Circular dependencies between stages
+- Over-staged (trivial steps split unnecessarily)
+
 ## Project Structure
 
 ```
@@ -275,7 +301,7 @@ folder-audit/
 
 | File | Purpose | You need it? |
 |------|---------|-------------|
-| `.claude/skills/folder-audit/SKILL.md` | The executable audit skill -- 10-step procedure with scoring rubrics, anti-pattern checklist, metrics, report template, structure imprinting, and skill escalation | **Yes** -- this is the skill |
+| `.claude/skills/folder-audit/SKILL.md` | The executable audit skill -- 11-step procedure with scoring rubrics, anti-pattern checklist, metrics, report template, structure imprinting, skill escalation, and MWP pipeline assessment | **Yes** -- this is the skill |
 | `CLAUDE.md` | Root routing config for this project | Only if cloning the full repo |
 | `File-tree audit/CONTEXT.md` | Workspace context for the audit methodology | Only if cloning the full repo |
 | `File-tree audit/Playbook - *.md` | Deep methodology reference -- scoring rationale, anti-pattern details, structural metric formulas | Optional -- for understanding the "why" |
@@ -351,6 +377,7 @@ No dependencies, no build step, no configuration. The skill is a single markdown
 
 - Clief Notes Module 3: Folder Architecture (Quantum Quill Lyceum)
 - File-Tree-as-Architecture pattern
+- Van Clief & McDermott, "Interpretable Context Methodology: Folder Structure as Agent Architecture" (2026) -- [MWP repo](https://github.com/RinDig/Model-Workspace-Protocol-MWP-)
 - Anthropic [Skill Authoring Best Practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
 
 ## License

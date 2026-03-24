@@ -10,6 +10,7 @@ This workspace holds the methodology and results for evaluating project folder a
 4. Output: a graded audit report saved to `audits/`
 5. **Imprint:** The skill offers to write structure rules into the audited project's CLAUDE.md — so future Claude sessions follow the structure automatically
 6. **Escalate:** If repeated friction is found, the skill recommends creating a new skill via the skill-creator workflow
+7. **MWP Pipeline Audit:** If numbered stage folders are detected, runs an additional assessment of stage contracts, reference/working separation, and pipeline architecture (scored separately, X/18)
 
 ## What Good Looks Like
 

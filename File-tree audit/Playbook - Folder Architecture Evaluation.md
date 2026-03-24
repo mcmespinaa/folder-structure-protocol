@@ -242,10 +242,41 @@ Most problems are rows 1–3. Almost nobody's problems are row 5.
 
 ---
 
+## MWP Pipeline Projects (Extended Evaluation)
+
+Some projects use numbered stage folders (`01_research/`, `02_script/`, etc.) to implement sequential, human-reviewed AI workflows. This pattern is formalized as Model Workspace Protocol (MWP), which extends the three-layer system into a five-layer context hierarchy.
+
+When stage folders are detected, the audit runs an additional assessment covering three areas the base audit cannot evaluate:
+
+### Stage Contracts (MWP Layer 2)
+
+Each numbered stage should have a CONTEXT.md that acts as a contract: what the stage reads (Inputs), what it does (Process), and what it writes (Outputs). The Inputs table should explicitly label files as Layer 3 (reference — stable across runs) or Layer 4 (working — per-run artifacts). This scoping is what prevents context window bloat and the "lost in the middle" degradation documented in Liu et al. (2024).
+
+### Reference vs Working Separation (MWP Layers 3-4)
+
+MWP distinguishes between reference material (voice guides, design systems, conventions — the factory) and working artifacts (research output, script drafts, specifications — the product). These require different model attention: reference material should be internalized as constraints, working artifacts should be processed as input. The folder structure should make this distinction visible through separate directories (`references/` vs `output/`).
+
+### Pipeline Architecture
+
+Stages should be numbered, each doing one job. Output of stage N becomes input to stage N+1 via file handoff. Humans can review and edit at every boundary. Individual stages can be re-run without restarting the entire pipeline (incremental recompilation).
+
+### Relationship to Base Score
+
+The MWP score (X/18) is reported separately from the base score (X/16). They measure different things:
+- **Base score:** Is this project well-organized for any AI tool?
+- **MWP score:** Is this pipeline well-structured for staged sequential workflows?
+
+A project can score well on one and poorly on the other. Both matter for their respective contexts.
+
+For the full MWP specification, see: Van Clief & McDermott, "Interpretable Context Methodology: Folder Structure as Agent Architecture" (2026).
+
+---
+
 ## Sources
 
 - Clief Notes Module 3: Folder Architecture (Quantum Quill Lyceum)
 - File-Tree-as-Architecture research (2026-03-16)
+- Van Clief & McDermott, "Interpretable Context Methodology: Folder Structure as Agent Architecture" (2026)
 - Playbook: Folder Structure Setup for Claude Code Projects
 - Playbook: File-Tree Agent Scaffold
 - Real-world implementations across multiple Claude Code projects
