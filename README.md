@@ -1,4 +1,6 @@
-# Folder Audit
+# Folder Structure Protocol
+
+> **Disclaimer:** This is not an official scoring tool or industry standard. It's an opinionated guide -- a structured way to think about folder architecture for AI-assisted projects. The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
 
 A Claude skill that evaluates any project's folder architecture against a three-layer routing system. It scores your project structure, flags anti-patterns, and outputs a graded report with prioritized fixes.
 
