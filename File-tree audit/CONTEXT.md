@@ -8,6 +8,8 @@ This workspace holds the methodology and results for evaluating project folder a
 2. Run the `folder-audit` skill (`.claude/skills/folder-audit/SKILL.md`)
 3. The skill generates a file tree snapshot, scores 3 layers, checks 7 anti-patterns, measures 5 structural metrics
 4. Output: a graded audit report saved to `audits/`
+5. **Imprint:** The skill offers to write structure rules into the audited project's CLAUDE.md — so future Claude sessions follow the structure automatically
+6. **Escalate:** If repeated friction is found, the skill recommends creating a new skill via the skill-creator workflow
 
 ## What Good Looks Like
 
