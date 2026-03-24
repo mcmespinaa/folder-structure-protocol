@@ -1,8 +1,8 @@
 # Folder Audit
 
-A Claude Code skill that evaluates any project's folder architecture against a three-layer routing system. It scores your project structure, flags anti-patterns, and outputs a graded report with prioritized fixes.
+A Claude skill that evaluates any project's folder architecture against a three-layer routing system. It scores your project structure, flags anti-patterns, and outputs a graded report with prioritized fixes.
 
-Built for developers using [Claude Code](https://docs.anthropic.com/en/docs/claude-code) who want their AI assistant to navigate their codebase effectively -- but the methodology works for any AI coding tool or even manual project organization.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI), [Claude.ai](https://claude.ai) (Cowork), the [Claude API](https://platform.claude.com/docs/en/build-with-claude/skills-guide), and the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview). The methodology also works for any AI coding tool or manual project organization.
 
 ## What It Does
 
@@ -19,7 +19,9 @@ When you run `/folder-audit` on a project, it:
 
 ## Quick Start
 
-### Option A: Copy the skill into your project
+### Claude Code (CLI)
+
+**Option A: Copy the skill into your project**
 
 ```bash
 # From your project root
@@ -36,7 +38,7 @@ Then in Claude Code:
 
 Claude will ask which project to audit (or audit the current one).
 
-### Option B: Clone the full repo
+**Option B: Clone the full repo**
 
 ```bash
 git clone https://github.com/mcmespinaa/folder-audit.git
@@ -45,7 +47,7 @@ cd folder-audit
 
 This gives you the skill, the methodology playbook, example audit reports, and the CLAUDE.md routing setup.
 
-### Option C: Install as a global skill
+**Option C: Install as a global skill**
 
 ```bash
 # Copy to your global Claude Code skills directory
@@ -55,6 +57,48 @@ curl -o ~/.claude/skills/folder-audit/SKILL.md \
 ```
 
 This makes `/folder-audit` available in every project.
+
+### Claude.ai (Cowork)
+
+Custom skills work in Claude.ai on Pro, Max, Team, and Enterprise plans with code execution enabled.
+
+1. **Download** the `SKILL.md` file from this repo (or clone and zip the `.claude/skills/folder-audit/` folder)
+2. **Create a zip** containing the skill directory structure:
+   ```bash
+   # From the repo root
+   cd .claude/skills
+   zip -r folder-audit.zip folder-audit/
+   ```
+3. **Upload** in Claude.ai: go to **Settings > Features > Custom Skills** and upload `folder-audit.zip`
+4. **Use it** in any conversation. Claude will automatically trigger the skill when you ask it to audit a folder structure. You can also prompt it directly:
+   ```
+   Audit the folder structure of this project
+   ```
+
+**Important notes for Cowork:**
+- The skill needs access to your project files. Share your project folder or zip with Claude in the conversation so it can read the file tree.
+- Network access varies by your admin settings. The skill itself needs no network -- it only reads files.
+- Custom skills on Claude.ai are per-user. Each team member needs to upload separately.
+
+### Claude API
+
+Skills work via the API with the code execution container. You'll need three beta headers:
+
+```
+anthropic-beta: code-execution-2025-08-25,skills-2025-10-02,files-api-2025-04-14
+```
+
+Upload the skill using the `/v1/skills` endpoint, then reference it in your requests via the `container.skills` parameter. See the [API Skills Guide](https://platform.claude.com/docs/en/build-with-claude/skills-guide) for full setup.
+
+### Claude Agent SDK
+
+```bash
+# Place the skill in your project
+mkdir -p .claude/skills/folder-audit
+# Copy SKILL.md into the directory
+```
+
+Include `"Skill"` in your `allowed_tools` configuration. The SDK auto-discovers skills from `.claude/skills/`.
 
 ## Usage
 
@@ -235,7 +279,11 @@ folder-audit/
 
 ## Requirements
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed and authenticated
+- Any Claude surface that supports custom skills:
+  - **Claude Code** -- CLI installed and authenticated
+  - **Claude.ai** -- Pro, Max, Team, or Enterprise plan with code execution enabled
+  - **Claude API** -- with code execution + skills beta headers
+  - **Agent SDK** -- with `"Skill"` in `allowed_tools`
 - A project folder to audit
 
 No dependencies, no build step, no configuration. The skill is a single markdown file.
