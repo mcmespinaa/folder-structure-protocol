@@ -1,6 +1,6 @@
 # Folder Structure Protocol
 
-> **Disclaimer:** This is not an official scoring tool or industry standard. It's an opinionated guide -- a structured way to think about folder architecture for AI-assisted projects. The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
+> **Disclaimer:** This is not an official scoring tool or industry standard. It's an opinionated scaffolding tool — a structured way to think about folder architecture for AI-assisted projects, guided by principles from Interpretable Context Methodology (Van Clief & McDermott, 2026). The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts for personal and team use, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
 
 A Claude skill that evaluates any project's folder architecture against a three-layer routing system. It scores your project structure, flags anti-patterns, and outputs a graded report with prioritized fixes.
 
@@ -17,7 +17,7 @@ Most developers blame the model when output quality drops. But the real problem 
 - **Ignoring instructions?** Your CLAUDE.md is 200 lines and the real rules are buried at line 180.
 - **Inconsistent across sessions?** No CONTEXT.md files -- every session starts from scratch.
 
-**Most AI output quality comes from what happens before the AI runs.** Industry data backs this up: [44–65% of developers](https://www.qodo.ai/reports/state-of-ai-code-quality/) blame missing context — not bad prompts — for poor AI-generated code. Adding routing files like AGENTS.md [cuts agent runtime by 29%](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html). Anthropic's own guidance frames the core challenge as ["curating what enters the model's attention budget"](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), not crafting the perfect prompt.
+**Most AI output quality comes from what happens before the AI runs.** Industry data backs this up: 44–65% of developers blame missing context — not bad prompts — for poor AI-generated code (Qodo, 2025). Adding routing files like AGENTS.md cuts agent runtime by 29% (Sherwood, 2025). Anthropic's own guidance frames the core challenge as "curating what enters the model's attention budget," not crafting the perfect prompt (Schluntz et al., 2025).
 
 We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is a teaching shorthand, not an empirical measurement — but the direction is well-established. This skill audits the 90% you can actually control.
 
@@ -38,6 +38,13 @@ When you run `/folder-audit` on a project, it:
 6. **Imprints structure rules** into the audited project's CLAUDE.md -- so every future Claude session follows the folder conventions automatically
 7. **Escalates to skill creation** when repeated friction is found -- recommends building a skill via the [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) workflow
 8. **ICM pipeline audit** (conditional) -- if numbered stage folders are detected, runs an extended assessment of stage contracts, reference/working separation, and pipeline architecture (scored separately, X/18)
+
+Beyond auditing, the project includes **pipeline execution skills** for ICM workflows:
+
+- **`/pipeline-scaffold`** -- creates a new pipeline from a domain description (numbered stage folders, contracts, reference/output directories)
+- **`/run-stage`** -- executes a single stage by following its contract (scoped context loading, mandatory human review)
+- **`/stage-review`** -- verifies stage outputs and checkpoint criteria before advancing
+- **`/validate-pipeline`** -- walks the contract chain to find broken handoffs and structural anti-patterns
 
 ## Quick Start
 
@@ -237,12 +244,7 @@ When fixing audit findings, prioritize:
 - **30%** from routing and rules (CLAUDE.md, CONTEXT.md, conventions)
 - **10%** from the AI interactions themselves
 
-The ratio is a prioritization heuristic, not a measured quantity. The directional claim — that structure and context dominate over prompting — is supported by:
-
-- [Qodo State of AI Code Quality 2025](https://www.qodo.ai/reports/state-of-ai-code-quality/): 44–65% of developers cite missing context as the primary cause of poor AI output
-- [Martin Fowler / Thoughtworks](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html): AGENTS.md files reduced coding agent median runtime by 29%
-- [Anthropic](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents): "The challenge isn't crafting the perfect prompt — it's curating what enters the model's attention budget"
-- [Chroma Research](https://research.trychroma.com/context-rot): More context tokens can degrade performance; structured, relevant context matters more than volume
+The ratio is a prioritization heuristic, not a measured quantity. The directional claim — that structure and context dominate over prompting — is supported by industry data (Qodo, 2025; Sherwood, 2025; Schluntz et al., 2025; Nussbaum, 2024). See [References](#references) for full citations.
 
 Fix the 60% first. No amount of prompt engineering compensates for bad structure.
 
@@ -293,13 +295,21 @@ The extended audit checks for six pipeline-specific anti-patterns:
 ## Project Structure
 
 ```
-folder-audit/
+folder-structure-protocol/
 ├── CLAUDE.md                          # Layer 1 -- routes to the right workspace
 ├── README.md                          # This file
 ├── .claude/
 │   └── skills/
-│       └── folder-audit/
-│           └── SKILL.md               # The audit skill (copy this to use)
+│       ├── folder-audit/
+│       │   └── SKILL.md               # Audit skill (copy this to use)
+│       ├── pipeline-scaffold/
+│       │   └── SKILL.md               # Pipeline creation skill
+│       ├── run-stage/
+│       │   └── SKILL.md               # Stage execution skill
+│       ├── validate-pipeline/
+│       │   └── SKILL.md               # Pipeline validation skill
+│       └── stage-review/
+│           └── SKILL.md               # Stage review skill
 └── File-tree audit/                   # Methodology workspace
     ├── CONTEXT.md                     # Layer 2 -- workspace context
     ├── Playbook - Folder Architecture Evaluation.md  # Full methodology
@@ -312,10 +322,14 @@ folder-audit/
 
 | File | Purpose | You need it? |
 |------|---------|-------------|
-| `.claude/skills/folder-audit/SKILL.md` | The executable audit skill -- 11-step procedure with scoring rubrics, anti-pattern checklist, metrics, report template, structure imprinting, skill escalation, and ICM pipeline assessment | **Yes** -- this is the skill |
+| `.claude/skills/folder-audit/SKILL.md` | Audit skill -- 11-step procedure with scoring rubrics, anti-pattern checklist, metrics, report template, structure imprinting, skill escalation, and ICM pipeline assessment | **Yes** -- the core skill |
+| `.claude/skills/pipeline-scaffold/SKILL.md` | Pipeline creation -- generates numbered stage folders with contracts, reference/output directories | For ICM pipelines |
+| `.claude/skills/run-stage/SKILL.md` | Stage execution -- reads contract, loads scoped inputs, follows Process, writes outputs, pauses for review | For ICM pipelines |
+| `.claude/skills/validate-pipeline/SKILL.md` | Pipeline validation -- walks contract chain, flags broken handoffs and anti-patterns | For ICM pipelines |
+| `.claude/skills/stage-review/SKILL.md` | Stage review -- verifies outputs, runs checkpoints, checks downstream readiness | For ICM pipelines |
 | `CLAUDE.md` | Root routing config for this project | Only if cloning the full repo |
 | `File-tree audit/CONTEXT.md` | Workspace context for the audit methodology | Only if cloning the full repo |
-| `File-tree audit/Playbook - *.md` | Deep methodology reference -- scoring rationale, anti-pattern details, structural metric formulas | Optional -- for understanding the "why" |
+| `File-tree audit/Playbook - *.md` | Deep methodology reference -- scoring rationale, anti-pattern details, structural metric formulas, pipeline execution methodology | Optional -- for understanding the "why" |
 | `File-tree audit/audits/*.md` | Example audit reports from real projects | Optional -- to see what output looks like |
 
 ## Scoring Criteria
@@ -384,12 +398,22 @@ folder-audit/
 
 No dependencies, no build step, no configuration. The skill is a single markdown file.
 
-## Sources
+## References
+
+Nussbaum, A. (2024). *Context rot*. Chroma Research. https://research.trychroma.com/context-rot
+
+Qodo. (2025). *State of AI code quality 2025*. https://www.qodo.ai/reports/state-of-ai-code-quality/
+
+Schluntz, B., Sanchez, B., Morar, D., & Schluntz, E. (2025, November 18). Effective context engineering for AI agents. Anthropic. https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+
+Sherwood, P. (2025, June 24). Context engineering for coding agents. *martinfowler.com*. https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html
+
+Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder structure as agentic architecture. *arXiv*. https://doi.org/10.48550/arXiv.2603.16021
+
+## Additional Sources
 
 - Clief Notes Module 3: Folder Architecture (Quantum Quill Lyceum)
-- File-Tree-as-Architecture pattern
-- Van Clief & McDermott, "Interpretable Context Methodology: Folder Structure as Agent Architecture" (2026) -- [ICM/MWP repo](https://github.com/RinDig/Model-Workspace-Protocol-MWP-)
-- Anthropic [Skill Authoring Best Practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+- Anthropic. (2025). *Skill authoring best practices*. https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 
 ## License
 

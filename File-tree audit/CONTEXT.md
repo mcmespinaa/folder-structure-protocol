@@ -11,6 +11,7 @@ This workspace holds the methodology and results for evaluating project folder a
 5. **Imprint:** The skill offers to write structure rules into the audited project's CLAUDE.md — so future Claude sessions follow the structure automatically
 6. **Escalate:** If repeated friction is found, the skill recommends creating a new skill via the skill-creator workflow
 7. **ICM Pipeline Audit:** If numbered stage folders are detected, runs an additional assessment of stage contracts, reference/working separation, and pipeline architecture (scored separately, X/18)
+8. **Pipeline execution:** Four skills handle scaffolding (`/pipeline-scaffold`), executing (`/run-stage`), reviewing (`/stage-review`), and validating (`/validate-pipeline`) ICM pipelines — see Playbook for methodology
 
 ## What Good Looks Like
 
