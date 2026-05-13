@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Folder Structure Protocol — Folder architecture as agent orchestration</title>
+<meta name="description" content="A set of Claude skills for evaluating folder architecture and running staged AI workflows. Built on ICM (Van Clief & McDermott, 2026)." />
+<meta property="og:title" content="Folder Structure Protocol" />
+<meta property="og:description" content="Folder architecture as agent orchestration. Five Claude skills: audit, scaffold, run, review, validate." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%97%82%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-mute: #8a8a8a;
+    --paper: #fafaf7;
+    --paper-warm: #f4f1ea;
+    --rule: #d8d4ca;
+    --accent: #2f5f3f;
+    --accent-soft: #e3ede5;
+    --icm: #1f4a7a;
+    --icm-soft: #dde7f0;
+    --skill: #b85c00;
+    --skill-soft: #fbe9d2;
+    --layer-base: #5a7d2a;
+    --layer-pipe: #1f4a7a;
+    --code-bg: #1e1e1e;
+    --code-ink: #e8e8e3;
+    --code-mute: #909087;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ececea;
+      --ink-soft: #b8b8b4;
+      --ink-mute: #7a7a76;
+      --paper: #15171a;
+      --paper-warm: #1c1e22;
+      --rule: #34373d;
+      --accent: #7fb88e;
+      --accent-soft: #1f2e24;
+      --icm: #88b4dc;
+      --icm-soft: #1d2a38;
+      --skill: #e8a35b;
+      --skill-soft: #3a2611;
+      --layer-base: #a4c478;
+      --layer-pipe: #88b4dc;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-serif, "Iowan Old Style", "Charter", "Georgia", serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono, code, pre, kbd, .skill-name {
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Menlo", "Consolas", monospace;
+  }
+  .sans {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+  a:hover { background: var(--accent-soft); }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 28px; }
+  .narrow { max-width: 720px; }
+
+  /* Nav */
+  nav.top {
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 0;
+    font-size: 14px;
+  }
+  nav.top .wrap { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  nav.top .brand { font-weight: 600; letter-spacing: -0.01em; }
+  nav.top .brand small { color: var(--ink-mute); font-weight: 400; margin-left: 8px; }
+  nav.top ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 20px; flex-wrap: wrap; }
+  nav.top a { border-bottom: none; color: var(--ink-soft); }
+  nav.top a:hover { color: var(--accent); background: transparent; }
+
+  /* Hero */
+  header.hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: clamp(34px, 5.5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 22px;
+    font-weight: 500;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede {
+    font-size: 20px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 0 32px;
+    line-height: 1.5;
+  }
+  .cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-block;
+    padding: 11px 22px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: -apple-system, system-ui, sans-serif;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+  }
+  .btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+  }
+  .btn-secondary:hover { background: var(--paper-warm); color: var(--ink); border-color: var(--ink-soft); }
+  .meta-row {
+    margin-top: 30px;
+    font-size: 13px;
+    color: var(--ink-mute);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-row a { color: var(--ink-soft); }
+
+  /* Section */
+  section { padding: 64px 0; border-bottom: 1px solid var(--rule); }
+  h2 {
+    font-size: 30px;
+    letter-spacing: -0.015em;
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  h2 .num {
+    color: var(--ink-mute);
+    font-family: ui-monospace, monospace;
+    font-size: 14px;
+    margin-right: 10px;
+    font-weight: 400;
+    vertical-align: 4px;
+  }
+  .section-sub { color: var(--ink-mute); font-size: 14px; margin: 0 0 32px; }
+  h3 {
+    font-size: 19px;
+    margin: 28px 0 10px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  /* Problem section */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    margin: 28px 0;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .problem-cell {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+  }
+  .problem-cell:nth-child(even) { border-right: none; }
+  .problem-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .problem-cell .sym { font-weight: 600; display: block; margin-bottom: 6px; }
+  .problem-cell .ans { color: var(--ink-soft); font-size: 15px; line-height: 1.5; }
+  @media (max-width: 640px) {
+    .problem-grid { grid-template-columns: 1fr; }
+    .problem-cell { border-right: none; }
+    .problem-cell:nth-last-child(2) { border-bottom: 1px solid var(--rule); }
+  }
+  blockquote.callout {
+    margin: 32px 0;
+    padding: 22px 26px;
+    background: var(--paper-warm);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+  blockquote.callout strong { color: var(--ink); }
+
+  /* Architecture diagram */
+  .arch {
+    margin: 32px 0;
+    padding: 32px 28px;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+  }
+  .arch-row {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .arch-box {
+    border: 1.5px solid;
+    border-radius: 8px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .arch-box.icm { border-color: var(--icm); background: var(--icm-soft); }
+  .arch-box.fsp { border-color: var(--accent); background: var(--accent-soft); }
+  .arch-box h4 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    font-family: -apple-system, system-ui, sans-serif;
+    font-weight: 600;
+  }
+  .arch-box .role { font-size: 12px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .arch-box ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+  .arch-box ul li { margin-bottom: 2px; }
+  .arch-arrow {
+    text-align: center;
+    color: var(--ink-mute);
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 12px;
+  }
+  .arch-arrow .line {
+    height: 1px;
+    background: var(--ink-mute);
+    margin: 8px 0;
+    position: relative;
+  }
+  .arch-arrow .line::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    border-left: 8px solid var(--ink-mute);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+  }
+  @media (max-width: 760px) {
+    .arch-row { grid-template-columns: 1fr; }
+    .arch-arrow .line { transform: rotate(90deg); width: 60px; margin: 12px auto; }
+  }
+
+  /* Lifecycle */
+  .lifecycle {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 28px 0 8px;
+    align-items: stretch;
+  }
+  .stage {
+    background: var(--skill-soft);
+    border: 1.5px solid var(--skill);
+    border-radius: 6px;
+    padding: 14px 12px;
+    text-align: center;
+    position: relative;
+  }
+  .stage .stage-num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--skill);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .stage .stage-name {
+    font-family: ui-monospace, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .stage .stage-desc {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    font-family: -apple-system, system-ui, sans-serif;
+  }
+  .lifecycle-loop {
+    text-align: center;
+    color: var(--ink-mute);
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 760px) {
+    .lifecycle { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Layers stack */
+  .layers { margin: 24px 0; }
+  .layer {
+    display: grid;
+    grid-template-columns: 90px 1fr 220px;
+    gap: 16px;
+    padding: 14px 18px;
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    background: var(--paper);
+    font-size: 14px;
+    align-items: center;
+  }
+  .layer:first-child { border-radius: 6px 6px 0 0; }
+  .layer:last-child { border-radius: 0 0 6px 6px; border-bottom: 1px solid var(--rule); }
+  .layer.base { background: linear-gradient(to right, var(--accent-soft) 0%, transparent 100%); }
+  .layer.pipe { background: linear-gradient(to right, var(--icm-soft) 0%, transparent 100%); }
+  .layer-num {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.05em;
+  }
+  .layer-name strong { display: block; }
+  .layer-name span { font-size: 13px; color: var(--ink-soft); }
+  .layer-skills {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  @media (max-width: 700px) {
+    .layer { grid-template-columns: 1fr; gap: 4px; }
+    .layer-skills { text-align: left; }
+  }
+
+  /* Skills */
+  .skills-list { margin: 24px 0; }
+  .skill-item {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 28px;
+  }
+  .skill-item:last-child { border-bottom: none; }
+  .skill-name {
+    font-size: 15px;
+    color: var(--skill);
+    font-weight: 600;
+  }
+  .skill-tagline {
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-top: 4px;
+    font-family: -apple-system, system-ui, sans-serif;
+    font-weight: 400;
+  }
+  .skill-desc { color: var(--ink-soft); font-size: 15px; line-height: 1.6; margin: 0; }
+  @media (max-width: 640px) {
+    .skill-item { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  /* Install / code */
+  pre.install {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 22px 24px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 16px 0;
+  }
+  pre.install .c { color: var(--code-mute); }
+  pre.install .p { color: #79c0ff; }
+  .install-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-top: 28px;
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+  .install-tabs button {
+    border: none;
+    background: transparent;
+    padding: 10px 18px;
+    cursor: pointer;
+    color: var(--ink-mute);
+    border-bottom: 2px solid transparent;
+    font: inherit;
+    white-space: nowrap;
+  }
+  .install-tabs button[aria-selected="true"] {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .tab-panel { display: none; }
+  .tab-panel[data-active="true"] { display: block; }
+
+  /* Sourced claims */
+  .claims {
+    margin: 28px 0;
+    counter-reset: claim;
+  }
+  .claim {
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 24px;
+    font-size: 15px;
+  }
+  .claim:last-child { border-bottom: 1px solid var(--rule); }
+  .claim .stat { color: var(--ink); }
+  .claim .stat strong { font-size: 22px; font-weight: 500; color: var(--accent); display: block; margin-bottom: 2px; }
+  .claim .src { font-size: 13px; color: var(--ink-mute); text-align: right; }
+  @media (max-width: 640px) {
+    .claim { grid-template-columns: 1fr; gap: 4px; }
+    .claim .src { text-align: left; }
+  }
+
+  /* Footer */
+  footer {
+    padding: 56px 0 80px;
+    color: var(--ink-mute);
+    font-size: 13px;
+  }
+  footer .wrap { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
+  footer h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); margin: 0 0 12px; }
+  footer ul { list-style: none; padding: 0; margin: 0; line-height: 2; }
+  footer a { color: var(--ink-soft); border-bottom-color: var(--rule); }
+  @media (max-width: 700px) {
+    footer .wrap { grid-template-columns: 1fr; gap: 24px; }
+  }
+  .disclaimer {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: var(--paper-warm);
+    border-left: 3px solid var(--ink-mute);
+    border-radius: 0 4px 4px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  ::selection { background: var(--accent); color: white; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand sans">Folder Structure Protocol <small>FSP</small></div>
+    <ul class="sans">
+      <li><a href="#problem">Why</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="https://github.com/mcmespinaa/folder-structure-protocol">GitHub →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Five Claude skills · built on ICM (Van Clief & McDermott, 2026)</div>
+    <h1>Folder structure <em>is</em> agent orchestration.</h1>
+    <p class="lede">
+      Most AI output quality comes from what happens <em>before</em> the AI runs.
+      FSP is a set of five Claude skills that score, scaffold, and run staged
+      workflows using folder architecture as the orchestration layer — no
+      framework, no DAG, just files in the right places.
+    </p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/mcmespinaa/folder-structure-protocol">View on GitHub</a>
+      <a class="btn btn-secondary" href="#install">Install in 30 seconds</a>
+    </div>
+    <div class="meta-row sans">
+      <span>5 skills</span>
+      <span>·</span>
+      <span>Layers 0–4</span>
+      <span>·</span>
+      <span>X/16 base + X/18 pipeline scoring</span>
+      <span>·</span>
+      <span>Works with Claude Code, Claude.ai, API, Agent SDK</span>
+    </div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="wrap narrow">
+    <h2><span class="num">01</span>Most "bad AI output" is actually bad context.</h2>
+    <p class="section-sub">Trace the symptom backward.</p>
+    <p>
+      AI coding tools are only as good as the context they receive. When Claude opens your project, it has to figure out where things are, what conventions to follow, and which files matter for the current task. If your folders are disorganized, Claude wastes tokens guessing, reads the wrong files, or ignores your instructions entirely.
+    </p>
+    <p>Most developers blame the model. But the real cause is usually structural:</p>
+
+    <div class="problem-grid">
+      <div class="problem-cell">
+        <span class="sym">Wrong format?</span>
+        <span class="ans">Missing naming conventions — Claude improvises a pattern.</span>
+      </div>
+      <div class="problem-cell">
+        <span class="sym">Off-topic output?</span>
+        <span class="ans">No routing table — Claude loaded the wrong context file.</span>
+      </div>
+      <div class="problem-cell">
+        <span class="sym">Ignoring instructions?</span>
+        <span class="ans">Your CLAUDE.md is 200 lines, the real rules are buried at line 180.</span>
+      </div>
+      <div class="problem-cell">
+        <span class="sym">Inconsistent across sessions?</span>
+        <span class="ans">No CONTEXT.md files — every session starts from scratch.</span>
+      </div>
+    </div>
+
+    <blockquote class="callout">
+      <strong>The 60/30/10 heuristic.</strong> Prioritize fixes in this order: <strong>60%</strong> traditional structure (naming, organization, file grouping) → <strong>30%</strong> routing (CLAUDE.md, CONTEXT.md, conventions) → <strong>10%</strong> the AI interaction itself. Fix the 90% you can actually control.
+    </blockquote>
+
+    <h3>The industry data is consistent.</h3>
+    <div class="claims">
+      <div class="claim">
+        <div class="stat"><strong>44–65%</strong> of developers blame <em>missing context</em> — not bad prompts — for poor AI-generated code.</div>
+        <div class="src">Qodo, <em>State of AI Code Quality</em>, 2025</div>
+      </div>
+      <div class="claim">
+        <div class="stat"><strong>29%</strong> reduction in agent runtime from adding routing files like AGENTS.md.</div>
+        <div class="src">Sherwood, <em>martinfowler.com</em>, 2025</div>
+      </div>
+      <div class="claim">
+        <div class="stat"><strong>"Curating what enters the model's attention budget"</strong> — Anthropic frames this as <em>the</em> core engineering challenge.</div>
+        <div class="src">Schluntz et al., Anthropic, 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <h2><span class="num">02</span>The architecture.</h2>
+    <p class="section-sub">ICM is the methodology. FSP is the tooling layer on top.</p>
+
+    <div class="arch">
+      <div class="arch-row">
+        <div class="arch-box icm">
+          <h4>ICM</h4>
+          <div class="role">Methodology · upstream</div>
+          <ul>
+            <li>5-layer hierarchy</li>
+            <li>Stage contracts</li>
+            <li>Factory / Product split</li>
+            <li>5 design principles</li>
+          </ul>
+        </div>
+        <div class="arch-arrow sans">
+          <div>builds tooling on</div>
+          <div class="line"></div>
+          <div style="font-style: italic; color: var(--ink-mute);">Van Clief & McDermott, 2026</div>
+        </div>
+        <div class="arch-box fsp">
+          <h4>FSP</h4>
+          <div class="role">Tooling · this repo</div>
+          <ul>
+            <li>Scoring (X/16 + X/18)</li>
+            <li>Letter grading A–F</li>
+            <li>14 anti-patterns</li>
+            <li>5 structural metrics</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 12px;">The lifecycle loop</h3>
+      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Five skills, one feedback loop. Each output is reviewable. None auto-advance.</p>
+      <div class="lifecycle">
+        <div class="stage">
+          <div class="stage-num">01</div>
+          <div class="stage-name">/folder-audit</div>
+          <div class="stage-desc">score X/16, find anti-patterns</div>
+        </div>
+        <div class="stage">
+          <div class="stage-num">02</div>
+          <div class="stage-name">/pipeline-<br/>scaffold</div>
+          <div class="stage-desc">create stages + contracts</div>
+        </div>
+        <div class="stage">
+          <div class="stage-num">03</div>
+          <div class="stage-name">/run-stage</div>
+          <div class="stage-desc">execute with scoped context</div>
+        </div>
+        <div class="stage">
+          <div class="stage-num">04</div>
+          <div class="stage-name">/stage-review</div>
+          <div class="stage-desc">advance / revise / re-run</div>
+        </div>
+        <div class="stage">
+          <div class="stage-num">05</div>
+          <div class="stage-name">/validate-<br/>pipeline</div>
+          <div class="stage-desc">check handoffs in chain</div>
+        </div>
+      </div>
+      <div class="lifecycle-loop sans">↑ ← ← ← fix and iterate ← ← ← ↑</div>
+
+      <h3 style="margin-top: 36px;">The five layers</h3>
+      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0–1) are scored on every project. Blue layers (2–4) score only if numbered stage folders are detected.</p>
+      <div class="layers">
+        <div class="layer base">
+          <div class="layer-num">Layer 0</div>
+          <div class="layer-name"><strong>The Map</strong><span>CLAUDE.md, &lt;50 lines, routing table</span></div>
+          <div class="layer-skills">/folder-audit</div>
+        </div>
+        <div class="layer base">
+          <div class="layer-num">Layer 1</div>
+          <div class="layer-name"><strong>The Rooms</strong><span>CONTEXT.md per workspace, &lt;80 lines</span></div>
+          <div class="layer-skills">/folder-audit · /pipeline-scaffold</div>
+        </div>
+        <div class="layer pipe">
+          <div class="layer-num">Layer 2</div>
+          <div class="layer-name"><strong>Stage Contracts</strong><span>Inputs / Process / Outputs per stage</span></div>
+          <div class="layer-skills">/pipeline-scaffold · /validate-pipeline</div>
+        </div>
+        <div class="layer pipe">
+          <div class="layer-num">Layer 3</div>
+          <div class="layer-name"><strong>The Factory</strong><span>references/, _config/, voice, conventions</span></div>
+          <div class="layer-skills">/run-stage <em>(read, internalize)</em></div>
+        </div>
+        <div class="layer pipe">
+          <div class="layer-num">Layer 4</div>
+          <div class="layer-name"><strong>The Product</strong><span>output/, per-run artifacts, drafts, data</span></div>
+          <div class="layer-skills">/run-stage <em>(write)</em> · /stage-review</div>
+        </div>
+      </div>
+      <p style="font-size: 13px; color: var(--ink-mute); margin-top: 12px; font-style: italic;">
+        The model should <strong>embody</strong> factory material (write in this voice) but <strong>transform</strong> product material (convert this research into a script). The folder structure makes the distinction visible — and enforceable.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap narrow">
+    <h2><span class="num">03</span>The five skills.</h2>
+    <p class="section-sub">Each one does one job. Each one is a markdown file. None of them auto-advance.</p>
+
+    <div class="skills-list">
+      <div class="skill-item">
+        <div>
+          <div class="skill-name">/folder-audit</div>
+          <div class="skill-tagline">Score any project's structure</div>
+        </div>
+        <p class="skill-desc">Snapshots the file tree, scores Layers 0–1 + Tools (X/16), checks 8 anti-patterns, measures 5 structural metrics, and generates a graded report with the top 3 prioritized fixes. Optionally imprints structure rules into the audited project's CLAUDE.md.</p>
+      </div>
+      <div class="skill-item">
+        <div>
+          <div class="skill-name">/pipeline-scaffold</div>
+          <div class="skill-tagline">Create a staged workflow</div>
+        </div>
+        <p class="skill-desc">Generates numbered stage folders with CONTEXT.md contracts (Inputs / Process / Outputs / Review Checkpoint), <code>references/</code> and <code>output/</code> directories per stage, a shared <code>_config/</code> folder, and a root CONTEXT.md with stage routing.</p>
+      </div>
+      <div class="skill-item">
+        <div>
+          <div class="skill-name">/run-stage</div>
+          <div class="skill-tagline">Execute one stage at a time</div>
+        </div>
+        <p class="skill-desc">Reads the stage's contract, loads <em>only</em> declared inputs (Layer 3 as constraints, Layer 4 as material), follows the Process instructions, writes declared outputs, and pauses for human review. Never auto-advances. Never reads undeclared files.</p>
+      </div>
+      <div class="skill-item">
+        <div>
+          <div class="skill-name">/stage-review</div>
+          <div class="skill-tagline">Verify before advancing</div>
+        </div>
+        <p class="skill-desc">Checks that all declared outputs exist, runs the Review Checkpoint criteria, assesses quality against the Process intent, confirms the next stage's inputs are satisfied. Read-only. Outputs a recommendation: <em>advance</em>, <em>revise</em>, or <em>re-run</em>.</p>
+      </div>
+      <div class="skill-item">
+        <div>
+          <div class="skill-name">/validate-pipeline</div>
+          <div class="skill-tagline">Check the contract chain</div>
+        </div>
+        <p class="skill-desc">Walks the full pipeline to find broken handoffs (output/input mismatches), factory/product cross-contamination, missing contract sections, and structural anti-patterns. Offers to fix issues directly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap narrow">
+    <h2><span class="num">04</span>Install.</h2>
+    <p class="section-sub">Pick the lightest option that fits. You can always add more skills later.</p>
+
+    <div class="install-tabs sans" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="a">A · One skill</button>
+      <button role="tab" aria-selected="false" data-tab="b">B · Full project</button>
+      <button role="tab" aria-selected="false" data-tab="c">C · Global (all projects)</button>
+      <button role="tab" aria-selected="false" data-tab="d">D · Clone</button>
+    </div>
+
+    <div class="tab-panel" data-tab="a" data-active="true">
+      <p style="font-size: 14px; color: var(--ink-soft); margin-top: 18px;">Install just <code>/folder-audit</code> into your current project. Lightest possible footprint.</p>
+<pre class="install"><span class="c"># from your project root</span>
+<span class="p">mkdir</span> -p .claude/skills/folder-audit
+<span class="p">curl</span> -o .claude/skills/folder-audit/SKILL.md \
+  https://raw.githubusercontent.com/mcmespinaa/folder-structure-protocol/main/.claude/skills/folder-audit/SKILL.md</pre>
+    </div>
+
+    <div class="tab-panel" data-tab="b">
+      <p style="font-size: 14px; color: var(--ink-soft); margin-top: 18px;">Install all five skills into a single project's <code>.claude/skills/</code>.</p>
+<pre class="install"><span class="c"># from your project root</span>
+<span class="p">git</span> clone https://github.com/mcmespinaa/folder-structure-protocol.git /tmp/fsp
+<span class="p">cp</span> -r /tmp/fsp/.claude/skills/* .claude/skills/
+<span class="p">rm</span> -rf /tmp/fsp</pre>
+    </div>
+
+    <div class="tab-panel" data-tab="c">
+      <p style="font-size: 14px; color: var(--ink-soft); margin-top: 18px;">Install globally so every Claude Code session has the skills.</p>
+<pre class="install"><span class="c"># from anywhere</span>
+<span class="p">git</span> clone https://github.com/mcmespinaa/folder-structure-protocol.git /tmp/fsp
+<span class="p">mkdir</span> -p ~/.claude/skills
+<span class="p">cp</span> -r /tmp/fsp/.claude/skills/* ~/.claude/skills/
+<span class="p">rm</span> -rf /tmp/fsp</pre>
+    </div>
+
+    <div class="tab-panel" data-tab="d">
+      <p style="font-size: 14px; color: var(--ink-soft); margin-top: 18px;">Clone the full repo if you want to read source, customize, or contribute.</p>
+<pre class="install"><span class="p">git</span> clone https://github.com/mcmespinaa/folder-structure-protocol.git
+<span class="p">cd</span> folder-structure-protocol
+<span class="p">cat</span> README.md</pre>
+    </div>
+
+    <h3 style="margin-top: 36px;">Then, in Claude Code:</h3>
+<pre class="install">/folder-audit <span class="c"># score your current project</span>
+/folder-audit /path/to/other-project <span class="c"># score a different one</span></pre>
+    <p style="font-size: 14px; color: var(--ink-soft); margin-top: 16px;">
+      Works with <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code (CLI)</a>, <a href="https://claude.ai">Claude.ai Cowork</a>, the <a href="https://platform.claude.com/docs/en/build-with-claude/skills-guide">Claude API</a>, and the <a href="https://platform.claude.com/docs/en/agent-sdk/overview">Agent SDK</a>. The methodology also works for any AI coding tool — or manual project organization.
+    </p>
+  </div>
+</section>
+
+<section id="philosophy">
+  <div class="wrap narrow">
+    <h2><span class="num">05</span>Philosophy.</h2>
+    <p class="section-sub">Why this exists, and what it isn't.</p>
+
+    <h3>Plain text. Single agent. Scoped context.</h3>
+    <p>FSP inherits ICM's commitment to simplicity. All skills are markdown files — not orchestration code. One Claude session walks through numbered folders. Each stage loads <em>only</em> its declared inputs. Humans review at every stage boundary. The system is anti-fragile: when models update, instructions in plain English degrade gracefully rather than breaking.</p>
+
+    <h3>It scores. It doesn't certify.</h3>
+    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken — it works, just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio are teaching shorthand for prioritizing fixes, not empirical measurements.</p>
+
+    <h3>Built from friction, not from spec.</h3>
+    <p>Every skill in this repo started as a manual checklist run dozens of times before being formalized. <code>/folder-audit</code> began as a mental walkthrough. <code>/stage-review</code> started as a hand-written checkpoint template. The methodology is <em>recovered</em> from practice — not designed upfront.</p>
+
+    <div class="disclaimer">
+      <strong>Disclaimer:</strong> This is not an official scoring tool or industry standard. It's an opinionated scaffolding tool — a structured way to think about folder architecture for AI-assisted projects, guided by principles from <a href="https://github.com/RinDig/Interpreted-Context-Methdology">Interpretable Context Methodology</a> (Van Clief & McDermott, 2026). The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts for personal and team use, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap sans">
+    <div>
+      <h5>Folder Structure Protocol</h5>
+      <p style="margin: 0 0 10px; color: var(--ink-soft);">Five Claude skills for evaluating folder architecture and running staged AI workflows.</p>
+      <p style="margin: 0; color: var(--ink-mute);">Built by <a href="https://github.com/mcmespinaa">MC Espina</a>. Released under MIT.</p>
+    </div>
+    <div>
+      <h5>Project</h5>
+      <ul>
+        <li><a href="https://github.com/mcmespinaa/folder-structure-protocol">GitHub repo</a></li>
+        <li><a href="https://github.com/mcmespinaa/folder-structure-protocol#readme">README</a></li>
+        <li><a href="https://github.com/mcmespinaa/folder-structure-protocol/issues">Issues</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Foundation</h5>
+      <ul>
+        <li><a href="https://github.com/RinDig/Interpreted-Context-Methdology">ICM repo</a></li>
+        <li><a href="https://doi.org/10.48550/arXiv.2603.16021">ICM paper</a></li>
+        <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic on context</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.install-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.install-tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+      document.querySelectorAll('.tab-panel').forEach(p => p.dataset.active = p.dataset.tab === tab ? 'true' : 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
