@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Folder Structure Protocol — Folder architecture as agent orchestration</title>
+<title>Folder Structure Protocol · Folder architecture as agent orchestration</title>
 <meta name="description" content="A set of Claude skills for evaluating folder architecture and running staged AI workflows. Built on ICM (Van Clief & McDermott, 2026)." />
 <meta property="og:title" content="Folder Structure Protocol" />
 <meta property="og:description" content="Folder architecture as agent orchestration. Five Claude skills: audit, scaffold, run, review, validate." />
@@ -475,7 +475,7 @@
     <p class="lede">
       Most AI output quality comes from what happens <em>before</em> the AI runs.
       FSP is a set of five Claude skills that score, scaffold, and run staged
-      workflows using folder architecture as the orchestration layer — no
+      workflows using folder architecture as the orchestration layer. No
       framework, no DAG, just files in the right places.
     </p>
     <div class="cta">
@@ -485,7 +485,7 @@
     <div class="meta-row sans">
       <span>5 skills</span>
       <span>·</span>
-      <span>Layers 0–4</span>
+      <span>Layers 0 to 4</span>
       <span>·</span>
       <span>X/16 base + X/18 pipeline scoring</span>
       <span>·</span>
@@ -506,11 +506,11 @@
     <div class="problem-grid">
       <div class="problem-cell">
         <span class="sym">Wrong format?</span>
-        <span class="ans">Missing naming conventions — Claude improvises a pattern.</span>
+        <span class="ans">Missing naming conventions, so Claude improvises a pattern.</span>
       </div>
       <div class="problem-cell">
         <span class="sym">Off-topic output?</span>
-        <span class="ans">No routing table — Claude loaded the wrong context file.</span>
+        <span class="ans">No routing table, so Claude loaded the wrong context file.</span>
       </div>
       <div class="problem-cell">
         <span class="sym">Ignoring instructions?</span>
@@ -518,7 +518,7 @@
       </div>
       <div class="problem-cell">
         <span class="sym">Inconsistent across sessions?</span>
-        <span class="ans">No CONTEXT.md files — every session starts from scratch.</span>
+        <span class="ans">No CONTEXT.md files, so every session starts from scratch.</span>
       </div>
     </div>
 
@@ -529,7 +529,7 @@
     <h3>The industry data is consistent.</h3>
     <div class="claims">
       <div class="claim">
-        <div class="stat"><strong>44–65%</strong> of developers blame <em>missing context</em> — not bad prompts — for poor AI-generated code.</div>
+        <div class="stat"><strong>44 to 65%</strong> of developers blame <em>missing context</em>, not bad prompts, for poor AI-generated code.</div>
         <div class="src">Qodo, <em>State of AI Code Quality</em>, 2025</div>
       </div>
       <div class="claim">
@@ -537,7 +537,7 @@
         <div class="src">Sherwood, <em>martinfowler.com</em>, 2025</div>
       </div>
       <div class="claim">
-        <div class="stat"><strong>"Curating what enters the model's attention budget"</strong> — Anthropic frames this as <em>the</em> core engineering challenge.</div>
+        <div class="stat"><strong>"Curating what enters the model's attention budget"</strong> is how Anthropic frames the core engineering challenge.</div>
         <div class="src">Schluntz et al., Anthropic, 2025</div>
       </div>
     </div>
@@ -571,7 +571,7 @@
           <div class="role">Tooling · this repo</div>
           <ul>
             <li>Scoring (X/16 + X/18)</li>
-            <li>Letter grading A–F</li>
+            <li>Letter grading A to F</li>
             <li>14 anti-patterns</li>
             <li>5 structural metrics</li>
           </ul>
@@ -610,7 +610,7 @@
       <div class="lifecycle-loop sans">↑ ← ← ← fix and iterate ← ← ← ↑</div>
 
       <h3 style="margin-top: 36px;">The five layers</h3>
-      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0–1) are scored on every project. Blue layers (2–4) score only if numbered stage folders are detected.</p>
+      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0 and 1) are scored on every project. Blue layers (2, 3, and 4) score only if numbered stage folders are detected.</p>
       <div class="layers">
         <div class="layer base">
           <div class="layer-num">Layer 0</div>
@@ -639,7 +639,7 @@
         </div>
       </div>
       <p style="font-size: 13px; color: var(--ink-mute); margin-top: 12px; font-style: italic;">
-        The model should <strong>embody</strong> factory material (write in this voice) but <strong>transform</strong> product material (convert this research into a script). The folder structure makes the distinction visible — and enforceable.
+        The model should <strong>embody</strong> factory material (write in this voice) but <strong>transform</strong> product material (convert this research into a script). The folder structure makes the distinction visible, and enforceable.
       </p>
     </div>
   </div>
@@ -656,7 +656,7 @@
           <div class="skill-name">/folder-audit</div>
           <div class="skill-tagline">Score any project's structure</div>
         </div>
-        <p class="skill-desc">Snapshots the file tree, scores Layers 0–1 + Tools (X/16), checks 8 anti-patterns, measures 5 structural metrics, and generates a graded report with the top 3 prioritized fixes. Optionally imprints structure rules into the audited project's CLAUDE.md.</p>
+        <p class="skill-desc">Snapshots the file tree, scores Layers 0 and 1 plus Tools (X/16), checks 8 anti-patterns, measures 5 structural metrics, and generates a graded report with the top 3 prioritized fixes. Optionally imprints structure rules into the audited project's CLAUDE.md.</p>
       </div>
       <div class="skill-item">
         <div>
@@ -738,7 +738,7 @@
 <pre class="install">/folder-audit <span class="c"># score your current project</span>
 /folder-audit /path/to/other-project <span class="c"># score a different one</span></pre>
     <p style="font-size: 14px; color: var(--ink-soft); margin-top: 16px;">
-      Works with <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code (CLI)</a>, <a href="https://claude.ai">Claude.ai Cowork</a>, the <a href="https://platform.claude.com/docs/en/build-with-claude/skills-guide">Claude API</a>, and the <a href="https://platform.claude.com/docs/en/agent-sdk/overview">Agent SDK</a>. The methodology also works for any AI coding tool — or manual project organization.
+      Works with <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code (CLI)</a>, <a href="https://claude.ai">Claude.ai Cowork</a>, the <a href="https://platform.claude.com/docs/en/build-with-claude/skills-guide">Claude API</a>, and the <a href="https://platform.claude.com/docs/en/agent-sdk/overview">Agent SDK</a>. The methodology also works for any AI coding tool, or for manual project organization.
     </p>
   </div>
 </section>
@@ -749,16 +749,16 @@
     <p class="section-sub">Why this exists, and what it isn't.</p>
 
     <h3>Plain text. Single agent. Scoped context.</h3>
-    <p>FSP inherits ICM's commitment to simplicity. All skills are markdown files — not orchestration code. One Claude session walks through numbered folders. Each stage loads <em>only</em> its declared inputs. Humans review at every stage boundary. The system is anti-fragile: when models update, instructions in plain English degrade gracefully rather than breaking.</p>
+    <p>FSP inherits ICM's commitment to simplicity. All skills are markdown files, not orchestration code. One Claude session walks through numbered folders. Each stage loads <em>only</em> its declared inputs. Humans review at every stage boundary. The system is anti-fragile: when models update, instructions in plain English degrade gracefully rather than breaking.</p>
 
     <h3>It scores. It doesn't certify.</h3>
-    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken — it works, just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>) are teaching shorthand for prioritizing fixes, not empirical measurements.</p>
+    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken. It works, it just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>) are teaching shorthand for prioritizing fixes, not empirical measurements.</p>
 
     <h3>Built from friction, not from spec.</h3>
-    <p>Every skill in this repo started as a manual checklist run dozens of times before being formalized. <code>/folder-audit</code> began as a mental walkthrough. <code>/stage-review</code> started as a hand-written checkpoint template. The methodology is <em>recovered</em> from practice — not designed upfront.</p>
+    <p>Every skill in this repo started as a manual checklist run dozens of times before being formalized. <code>/folder-audit</code> began as a mental walkthrough. <code>/stage-review</code> started as a hand-written checkpoint template. The methodology is <em>recovered</em> from practice, not designed upfront.</p>
 
     <div class="disclaimer">
-      <strong>Disclaimer:</strong> This is not an official scoring tool or industry standard. It's an opinionated scaffolding tool — a structured way to think about folder architecture for AI-assisted projects, guided by principles from <a href="https://github.com/RinDig/Interpreted-Context-Methdology">Interpretable Context Methodology</a> (Van Clief & McDermott, 2026). The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts for personal and team use, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
+      <strong>Disclaimer:</strong> This is not an official scoring tool or industry standard. It's an opinionated scaffolding tool, a structured way to think about folder architecture for AI-assisted projects, guided by principles from <a href="https://github.com/RinDig/Interpreted-Context-Methdology">Interpretable Context Methodology</a> (Van Clief &amp; McDermott, 2026). The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts for personal and team use, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
     </div>
   </div>
 </section>
