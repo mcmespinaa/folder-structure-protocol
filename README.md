@@ -1,10 +1,24 @@
 # Folder Structure Protocol
 
-> **Disclaimer:** This is not an official scoring tool or industry standard. It's an opinionated scaffolding tool — a structured way to think about folder architecture for AI-assisted projects, guided by principles from [Interpretable Context Methodology](https://github.com/RinDig/Interpreted-Context-Methdology) (Van Clief & McDermott, 2026). The scores, grades, and heuristics (including the 60/30/10 rule) are practical shortcuts for personal and team use, not empirical measurements. Use what's useful, adapt what isn't, ignore what doesn't fit your project.
+**Claude skills for evaluating folder architecture and running staged AI workflows.** Built on the [ICM five-layer context hierarchy](https://doi.org/10.48550/arXiv.2603.16021) — the methodology that treats folder structure as agent orchestration.
 
-A set of Claude skills for evaluating folder architecture and running staged AI workflows. Built on the [ICM five-layer context hierarchy](https://doi.org/10.48550/arXiv.2603.16021) — the methodology that uses folder structure as agent orchestration.
+→ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Claude.ai](https://claude.ai) (Cowork), the [Claude API](https://platform.claude.com/docs/en/build-with-claude/skills-guide), and the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview). The methodology also works for any AI coding tool or manual project organization.
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI), [Claude.ai](https://claude.ai) (Cowork), the [Claude API](https://platform.claude.com/docs/en/build-with-claude/skills-guide), and the [Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview). The methodology also works for any AI coding tool or manual project organization.
+## What's in the box
+
+Five chained skills, run via slash commands in Claude Code:
+
+```
+/folder-audit       → Score any project's structure (X/16 base, X/18 with pipelines)
+/pipeline-scaffold  → Generate numbered stage folders with CONTEXT.md contracts
+/run-stage          → Execute one stage at a time, with mandatory human review
+/stage-review       → Verify outputs before advancing
+/validate-pipeline  → Check the full contract chain for broken handoffs
+```
+
+[**Quick Start** ↓](#quick-start) · [**Why this matters** ↓](#why-this-matters) · [**The Five Layers** ↓](#the-five-layer-context-hierarchy)
+
+> **Not an official standard.** Opinionated scaffolding guided by [Interpretable Context Methodology](https://github.com/RinDig/Interpreted-Context-Methdology) (Van Clief & McDermott, 2026). The scoring rubric and the 60/30/10 heuristic are practical shortcuts for personal and team use, not empirical measurements. Use what's useful, adapt what isn't.
 
 ## Why This Matters
 
