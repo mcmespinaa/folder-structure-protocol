@@ -150,8 +150,8 @@ When fixing folder architecture, prioritize in this order:
 The ratio is a prioritization heuristic, not an empirical measurement. The directional claim is supported by industry data:
 
 - 44–65% of developers blame missing context — not bad prompts — for poor AI-generated code (Qodo, 2025)
-- Routing files like AGENTS.md cut agent runtime by 29% (Sherwood, 2025)
-- Anthropic frames the core challenge as "curating what enters the model's attention budget" (Schluntz et al., 2025)
+- An AGENTS.md routing file cut median agent runtime by ~29% in a controlled 124-pull-request study (Lulla et al., 2026)
+- Anthropic frames the core challenge as curating an LLM's limited "attention budget" (Rajasekaran et al., 2025)
 
 If the structure is bad, no amount of prompt engineering fixes it. Fix the 60% first.
 
@@ -365,10 +365,11 @@ Most problems are rows 1–3. Almost nobody's problems are row 5.
 Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder structure as agent architecture. *arXiv*. https://doi.org/10.48550/arXiv.2603.16021
 
 **Supporting Research:**
-- Schluntz, B., et al. (2025). Effective context engineering for AI agents. Anthropic. https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
-- Sherwood, P. (2025). Context engineering for coding agents. *martinfowler.com*. https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html
+- Rajasekaran, P., Dixon, E., Ryan, C., & Hadfield, J. (2025). Effective context engineering for AI agents. Anthropic. https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+- Lulla, J. L., et al. (2026). On the impact of AGENTS.md files on the efficiency of AI coding agents. arXiv:2601.20404. https://arxiv.org/abs/2601.20404
+- Böckeler, B. (2026). Context engineering for coding agents. *martinfowler.com*. https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html
 - Qodo. (2025). State of AI code quality 2025. https://www.qodo.ai/reports/state-of-ai-code-quality/
-- Nussbaum, A. (2024). Context rot. Chroma Research. https://research.trychroma.com/context-rot
+- Hong, K., Troynikov, A., & Huber, J. (2025). Context rot: How increasing input tokens impacts LLM performance. Chroma Research. https://research.trychroma.com/context-rot
 
 **FSP-Authored (not from the above):**
 Scoring rubric (X/16, X/18), letter grading (A/B/C/F), 60/30/10 heuristic, structural metrics (M1–M5), base anti-patterns #1–8, skill implementations.
