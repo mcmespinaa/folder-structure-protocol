@@ -48,6 +48,8 @@ For each stage, create:
 
 Stage numbering: `01_`, `02_`, etc. Use snake_case for stage names. Zero-pad to two digits.
 
+**Layout note:** FSP scaffolds stage folders at the pipeline root by default. The ICM paper's canonical layout (Fig. 2) nests them under a `stages/` directory and adds optional `shared/` and `setup/` folders. Both layouts are valid — all FSP skills detect both. If the user asks for the canonical ICM layout, nest under `stages/`.
+
 Also create:
 - `_config/` at the pipeline root — for workspace-wide settings (voice, style, brand). Include an empty placeholder `README.md` explaining its purpose.
 - Root `CONTEXT.md` — pipeline-level routing (Step 5)
@@ -88,6 +90,7 @@ Before advancing to the next stage, verify:
 
 **Rules for writing contracts:**
 - Inputs table must label every file as Layer 3 (reference — internalize as constraints) or Layer 4 (working — process as input)
+- When only part of a file matters, name the relevant section(s) in the Purpose column (ICM scopes inputs to sections, not just whole files)
 - Process section should have 3-7 instructions. If it needs more, the stage is too broad — split it.
 - Outputs section names exact files, not "whatever was produced"
 - Review Checkpoint gives the human concrete things to verify before advancing

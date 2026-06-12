@@ -523,7 +523,7 @@
     </div>
 
     <blockquote class="callout">
-      <strong>The 60/30/10 heuristic.</strong> Prioritize fixes in this order: <strong>60%</strong> traditional structure (naming, organization, file grouping) → <strong>30%</strong> routing (CLAUDE.md, CONTEXT.md, conventions) → <strong>10%</strong> the AI interaction itself. Fix the 90% you can actually control (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>).
+      <strong>The 60/30/10 heuristic.</strong> Prioritize fixes in this order: <strong>60%</strong> traditional structure (naming, organization, file grouping) → <strong>30%</strong> routing (CLAUDE.md, CONTEXT.md, conventions) → <strong>10%</strong> the AI interaction itself. Fix the 90% you can actually control. The ratio is an FSP teaching shorthand, not from the ICM paper.
     </blockquote>
 
     <h3>The industry data is consistent.</h3>
@@ -533,12 +533,12 @@
         <div class="src">Qodo, <em>State of AI Code Quality</em>, 2025</div>
       </div>
       <div class="claim">
-        <div class="stat"><strong>29%</strong> reduction in agent runtime from adding routing files like AGENTS.md.</div>
-        <div class="src">Sherwood, <em>martinfowler.com</em>, 2025</div>
+        <div class="stat"><strong>~29%</strong> lower median agent runtime when an AGENTS.md routing file is present — a controlled paired study across 124 real pull requests.</div>
+        <div class="src">Lulla et al., <em>arXiv:2601.20404</em>, 2026</div>
       </div>
       <div class="claim">
-        <div class="stat"><strong>"Curating what enters the model's attention budget"</strong> is how Anthropic frames the core engineering challenge.</div>
-        <div class="src">Schluntz et al., Anthropic, 2025</div>
+        <div class="stat">LLMs have a limited <strong>"attention budget"</strong> — Anthropic frames context engineering as curating what enters it.</div>
+        <div class="src">Rajasekaran et al., Anthropic, 2025</div>
       </div>
     </div>
   </div>
@@ -610,7 +610,7 @@
       <div class="lifecycle-loop sans">↑ ← ← ← fix and iterate ← ← ← ↑</div>
 
       <h3 style="margin-top: 36px;">The five layers</h3>
-      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0 and 1) are scored on every project. Blue layers (2, 3, and 4) score only if numbered stage folders are detected.</p>
+      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0 and 1) are scored on every project. Blue layers (2, 3, and 4) score only if numbered stage folders are detected. Layer numbering follows the ICM paper; the line budgets (&lt;50, &lt;80) and the placement of the routing table in Layer 0 are FSP conventions — the paper puts task routing in Layer 1.</p>
       <div class="layers">
         <div class="layer base">
           <div class="layer-num">Layer 0</div>
@@ -714,6 +714,7 @@
       <p style="font-size: 14px; color: var(--ink-soft); margin-top: 18px;">Install all five skills into a single project's <code>.claude/skills/</code>.</p>
 <pre class="install"><span class="c"># from your project root</span>
 <span class="p">git</span> clone https://github.com/mcmespinaa/folder-structure-protocol.git /tmp/fsp
+<span class="p">mkdir</span> -p .claude/skills
 <span class="p">cp</span> -r /tmp/fsp/.claude/skills/* .claude/skills/
 <span class="p">rm</span> -rf /tmp/fsp</pre>
     </div>
@@ -752,7 +753,7 @@
     <p>FSP inherits ICM's commitment to simplicity. All skills are markdown files, not orchestration code. One Claude session walks through numbered folders. Each stage loads <em>only</em> its declared inputs. Humans review at every stage boundary. The system is anti-fragile: when models update, instructions in plain English degrade gracefully rather than breaking.</p>
 
     <h3>It scores. It doesn't certify.</h3>
-    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken. It works, it just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>) are teaching shorthand for prioritizing fixes, not empirical measurements.</p>
+    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken. It works, it just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio are FSP-authored teaching shorthand for prioritizing fixes — not empirical measurements, and not from the ICM paper (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>), which defines the architecture FSP builds on.</p>
 
     <h3>Built from friction, not from spec.</h3>
     <p>Every skill in this repo started as a manual checklist run dozens of times before being formalized. <code>/folder-audit</code> began as a mental walkthrough. <code>/stage-review</code> started as a hand-written checkpoint template. The methodology is <em>recovered</em> from practice, not designed upfront.</p>

@@ -109,7 +109,7 @@ After writing all outputs, display:
 - Never write to locations not declared in the Outputs table
 - Never modify the stage's CONTEXT.md during execution
 - Never skip the human review pause
-- If Process instructions conflict with Layer 3 constraints, follow Layer 3 (the factory beats the product)
+- If Process instructions conflict with Layer 3 constraints, pause and flag the conflict to the user — a contract/reference disagreement is a source-level bug to fix (ICM's edit-source principle), not something to silently resolve
 - If a previous stage's output seems wrong, flag it — do not silently fix it
 
 ## What NOT to Do

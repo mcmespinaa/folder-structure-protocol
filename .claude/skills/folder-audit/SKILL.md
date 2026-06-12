@@ -74,6 +74,8 @@ Inventory skills, playbooks, or automation files. Score each criterion 0 or 1:
 
 If the project is new and has no tools yet, score N/A (not a penalty). Tools should not exist until friction is identified.
 
+**Note on criterion 3:** Deterministic helper scripts for mechanical work (fetching data, moving files, formatting output) are explicitly endorsed by ICM and should NOT be penalized. Criterion 3 targets *orchestration logic in code* — agent coordination, context passing, stage sequencing — which belongs in markdown and folder structure, not scripts.
+
 ### Step 5: Anti-Pattern Scan
 
 Check for each anti-pattern. Mark found/clear:
@@ -271,7 +273,7 @@ Check the structural properties of the stage pipeline:
 | 2 | Missing output folders (stages write to random locations) | |
 | 3 | Mixed reference and working files (config and output in same folder) | |
 | 4 | No Inputs table (stage CONTEXT.md doesn't specify what to load) | |
-| 5 | Circular dependencies (stage N reads from stage N+2) | |
+| 5 | Forward dependency (stage N reads from stage N+2 or later) | |
 | 6 | Over-staged (trivial steps split into separate stages unnecessarily) | |
 
 #### 11e: Calculate ICM Score
