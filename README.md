@@ -33,7 +33,7 @@ Most developers blame the model when output quality drops. But the real problem 
 
 **Most AI output quality comes from what happens before the AI runs.** Industry data backs this up: 44–65% of developers blame missing context — not bad prompts — for poor AI-generated code (Qodo, 2025). Adding routing files like AGENTS.md cuts agent runtime by 29% (Sherwood, 2025). Anthropic's own guidance frames the core challenge as "curating what enters the model's attention budget," not crafting the perfect prompt (Schluntz et al., 2025).
 
-We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is a teaching shorthand, not an empirical measurement, but the direction is well-established (Van Clief, 2026). Fix the 90% you can actually control.
+We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is an FSP-authored teaching shorthand, not an empirical measurement and not from the ICM paper — but the direction is supported by the industry data above. Fix the 90% you can actually control.
 
 It also matters for humans. A well-structured project is easier to navigate, onboard into, and maintain — with or without AI.
 
@@ -49,7 +49,7 @@ Layer 3: References (The Factory)  → Stable material: voice, style, convention
 Layer 4: Working (The Product)     → Per-run artifacts: drafts, data, output
 ```
 
-> **Terminology:** "Map," "Rooms," and "Tools" are metaphors from Clief Notes Module 3. Layer numbering (0–4) follows the ICM specification. The scoring rubric and grading scale are FSP-authored practical tools — not part of the ICM paper.
+> **Terminology:** "Map," "Rooms," and "Tools" are metaphors from Clief Notes Module 3. Layer numbering (0–4) follows the ICM specification, but the Layer 0/1 semantics differ slightly: in the ICM paper, Layer 0 is workspace *identity* ("Where am I?") and Layer 1 is *task routing* ("Where do I go?"); FSP places the routing table in Layer 0's CLAUDE.md (matching how Claude Code loads it) and uses Layer 1 for per-workspace descriptions. The scoring rubric and grading scale are FSP-authored practical tools — not part of the ICM paper.
 
 ### Layer 0: The Map (CLAUDE.md)
 
@@ -319,7 +319,7 @@ Date: 2026-03-24
 | 2 | Missing output folders | Stages write to random locations |
 | 3 | Mixed reference and working | Config and output in same folder |
 | 4 | No Inputs table | Stage contract doesn't specify what to load |
-| 5 | Circular dependencies | Stage N reads from stage N+2 |
+| 5 | Forward dependency | Stage N reads from stage N+2 or later |
 | 6 | Over-staged | Trivial steps split unnecessarily |
 
 ### 5 Structural Metrics
@@ -363,9 +363,12 @@ folder-structure-protocol/
 │       │   └── SKILL.md               # Stage review skill
 │       └── validate-pipeline/
 │           └── SKILL.md               # Pipeline validation skill
+├── index.html                         # GitHub Pages landing page
 └── File-tree audit/                   # Methodology workspace
     ├── CONTEXT.md                     # Layer 1 — workspace context
     ├── Playbook - Folder Architecture Evaluation.md
+    ├── FSP-vs-ICM-Playbook.md         # FSP↔ICM comparison + combined playbook
+    ├── FSP-skill-map.excalidraw       # Skill lifecycle diagram
     └── audits/                        # Example audit reports
         ├── audit-folder-structure-2026-03-24.md
         ├── audit-ai-socialagent-2026-03-24.md
@@ -400,7 +403,7 @@ No dependencies, no build step, no configuration. Each skill is a single markdow
 
 ## References
 
-Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder structure as agentic architecture. *arXiv*. https://doi.org/10.48550/arXiv.2603.16021
+Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder structure as agent architecture. *arXiv*. https://doi.org/10.48550/arXiv.2603.16021
 
 Schluntz, B., Sanchez, B., Morar, D., & Schluntz, E. (2025, November 18). Effective context engineering for AI agents. Anthropic. https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
 

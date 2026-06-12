@@ -83,7 +83,7 @@ Record results per handoff: **Pass** (all inputs satisfied), **Warning** (near-m
 | 2 | Missing output folders | Stage folder has no `output/` directory |
 | 3 | Mixed reference and working | `references/` contains dated/versioned files, or `output/` contains style guides |
 | 4 | No Inputs table | Stage CONTEXT.md has Process and Outputs but no Inputs table |
-| 5 | Circular dependencies | Stage N reads from stage N+2 or later (forward reference) |
+| 5 | Forward dependency | Stage N reads from stage N+2 or later (skips the chain) |
 | 6 | Over-staged | 3+ consecutive stages with only 1-2 Process instructions each |
 
 ### Step 6: Generate Validation Report

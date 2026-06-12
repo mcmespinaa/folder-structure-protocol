@@ -31,17 +31,17 @@ ICM is a **system architecture** that replaces multi-agent framework orchestrati
 - Stage contracts with Inputs/Process/Outputs tables
 - The factory/product distinction (reference material vs working artifacts)
 - Five design principles (one stage one job, plain text interface, layered context, every output is an edit surface, configure the factory not the product)
-- 15 conventions across architectural, quality, and onboarding categories
+- Naming, structure, and contract conventions (detailed in the ICM repository; the paper specifies the architecture and contract format)
 
 **ICM ships:**
 
 - The specification and design principles
-- Three pre-built workspaces (script-to-animation, course-deck-production, workspace-builder)
-- A meta-workspace that generates new ICM workspaces
+- Two production workspaces (script-to-animation, course-deck-production)
+- A meta-workspace (workspace-builder) that generates new ICM workspaces
 
 **ICM does not ship:**
 
-- Diagnostic tooling (no scoring, no audit)
+- Scoring or general diagnostic tooling (the paper describes a per-workspace audit file for cross-stage verification in §6.2, but no reusable scoring/audit tool)
 - Execution tooling (no stage runner, no validator)
 - Anti-pattern detection
 - Structural metrics
@@ -92,14 +92,14 @@ FSP is a **tooling layer** built on ICM. It operationalizes the ICM architecture
 | Stage contracts (Inputs/Process/Outputs) | Defined | Created by `/pipeline-scaffold`, executed by `/run-stage` |
 | Factory/Product separation | Defined as a principle | Checked by `/validate-pipeline`, enforced by `/run-stage` |
 | Human review gates | Core principle | Implemented as mandatory pause in `/run-stage`, verified by `/stage-review` |
-| 15 conventions | Defined | Not directly scored (some overlap with anti-patterns) |
+| Naming/structure conventions | Defined (ICM repository) | Not directly scored (some overlap with anti-patterns) |
 
 ### Tooling
 
 | Capability | ICM | FSP |
 |------------|-----|-----|
 | Folder structure scoring | Not provided | `/folder-audit` — 16pt base + 18pt ICM |
-| Pipeline scaffolding | 3 pre-built workspaces + workspace-builder | `/pipeline-scaffold` — generates for any domain |
+| Pipeline scaffolding | 2 pre-built workspaces + workspace-builder | `/pipeline-scaffold` — generates for any domain |
 | Stage execution with scoped loading | Described in principles | `/run-stage` — contract-enforced, reads only declared inputs |
 | Stage review / quality gates | Described in principles | `/stage-review` — checkpoint verification + downstream readiness |
 | Contract chain validation | Not provided | `/validate-pipeline` — handoff-by-handoff validation |
@@ -223,7 +223,7 @@ Layer 4: Working (The Product)     → Per-run artifacts: drafts, data, output
 | 2 | Missing output folders | Stages write to random locations |
 | 3 | Mixed reference and working | Config and output in same folder |
 | 4 | No Inputs table | Stage contract doesn't specify what to load |
-| 5 | Circular dependencies | Stage N reads from stage N+2 |
+| 5 | Forward dependency | Stage N reads from stage N+2 or later |
 | 6 | Over-staged | Trivial steps split unnecessarily |
 
 ### 5 Structural Metrics
@@ -362,7 +362,7 @@ Most problems are rows 1–3. Almost nobody's problems are row 5.
 ## References
 
 **ICM Specification:**
-Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder structure as agentic architecture. *arXiv*. https://doi.org/10.48550/arXiv.2603.16021
+Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder structure as agent architecture. *arXiv*. https://doi.org/10.48550/arXiv.2603.16021
 
 **Supporting Research:**
 - Schluntz, B., et al. (2025). Effective context engineering for AI agents. Anthropic. https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents

@@ -523,7 +523,7 @@
     </div>
 
     <blockquote class="callout">
-      <strong>The 60/30/10 heuristic.</strong> Prioritize fixes in this order: <strong>60%</strong> traditional structure (naming, organization, file grouping) → <strong>30%</strong> routing (CLAUDE.md, CONTEXT.md, conventions) → <strong>10%</strong> the AI interaction itself. Fix the 90% you can actually control (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>).
+      <strong>The 60/30/10 heuristic.</strong> Prioritize fixes in this order: <strong>60%</strong> traditional structure (naming, organization, file grouping) → <strong>30%</strong> routing (CLAUDE.md, CONTEXT.md, conventions) → <strong>10%</strong> the AI interaction itself. Fix the 90% you can actually control. The ratio is an FSP teaching shorthand, not from the ICM paper.
     </blockquote>
 
     <h3>The industry data is consistent.</h3>
@@ -752,7 +752,7 @@
     <p>FSP inherits ICM's commitment to simplicity. All skills are markdown files, not orchestration code. One Claude session walks through numbered folders. Each stage loads <em>only</em> its declared inputs. Humans review at every stage boundary. The system is anti-fragile: when models update, instructions in plain English degrade gracefully rather than breaking.</p>
 
     <h3>It scores. It doesn't certify.</h3>
-    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken. It works, it just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>) are teaching shorthand for prioritizing fixes, not empirical measurements.</p>
+    <p>The X/16 and X/18 scoring rubric exists to make folder quality <em>legible</em>, not to gatekeep. A project graded "B" by FSP isn't broken. It works, it just needs occasional re-steering. The grades, anti-patterns, and 60/30/10 ratio are FSP-authored teaching shorthand for prioritizing fixes — not empirical measurements, and not from the ICM paper (Van Clief &amp; McDermott, <a href="https://arxiv.org/abs/2603.16021">2026</a>), which defines the architecture FSP builds on.</p>
 
     <h3>Built from friction, not from spec.</h3>
     <p>Every skill in this repo started as a manual checklist run dozens of times before being formalized. <code>/folder-audit</code> began as a mental walkthrough. <code>/stage-review</code> started as a hand-written checkpoint template. The methodology is <em>recovered</em> from practice, not designed upfront.</p>
