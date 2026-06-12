@@ -65,7 +65,7 @@ FSP is a **tooling layer** built on ICM. It operationalizes the ICM architecture
 
 - A scoring rubric (X/16 base, X/18 ICM)
 - Letter grading (A/B/C/F)
-- The 60/30/10 prioritization heuristic
+- The 60/30/10 prioritization heuristic (ratio adapted from Van Clief's QQL course framework, re-domained to fix prioritization)
 - 14 anti-patterns (8 base + 6 ICM-specific)
 - 5 structural metrics (depth ratio, file density, naming consistency, convention coverage, context-to-content ratio)
 - Structure imprinting (writing rules into a project's CLAUDE.md)
@@ -147,7 +147,7 @@ When fixing folder architecture, prioritize in this order:
 - **30%** — Routing and rules (CLAUDE.md, CONTEXT.md, conventions)
 - **10%** — The AI interactions themselves
 
-The ratio is a prioritization heuristic, not an empirical measurement. The directional claim is supported by industry data:
+The ratio is adapted from Van Clief's 60/30/10 framework (Quantum Quill Lyceum, Module 2 — originally system composition: 60% traditional code, 30% rule-based logic, 10% AI calls), re-applied by FSP to fix prioritization. It is a teaching heuristic, not an empirical measurement and not from the ICM paper. The directional claim is supported by industry data:
 
 - 44–65% of developers blame missing context — not bad prompts — for poor AI-generated code (Qodo, 2025)
 - An AGENTS.md routing file cut median agent runtime by ~29% in a controlled 124-pull-request study (Lulla et al., 2026)
@@ -372,7 +372,7 @@ Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder
 - Hong, K., Troynikov, A., & Huber, J. (2025). Context rot: How increasing input tokens impacts LLM performance. Chroma Research. https://research.trychroma.com/context-rot
 
 **FSP-Authored (not from the above):**
-Scoring rubric (X/16, X/18), letter grading (A/B/C/F), 60/30/10 heuristic, structural metrics (M1–M5), base anti-patterns #1–8, skill implementations.
+Scoring rubric (X/16, X/18), letter grading (A/B/C/F), structural metrics (M1–M5), base anti-patterns #1–8, skill implementations. The 60/30/10 ratio is Van Clief's (QQL course, Module 2); its application to folder-fix prioritization is FSP's.
 
 ---
 

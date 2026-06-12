@@ -33,7 +33,7 @@ Most developers blame the model when output quality drops. But the real problem 
 
 **Most AI output quality comes from what happens before the AI runs.** Industry data backs this up: 44–65% of developers blame missing context — not bad prompts — for poor AI-generated code (Qodo, 2025). An AGENTS.md routing file cut median agent runtime by ~29% in a controlled 124-pull-request study (Lulla et al., 2026). Anthropic's own guidance frames the core challenge as curating an LLM's limited "attention budget," not crafting the perfect prompt (Rajasekaran et al., 2025).
 
-We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The exact ratio is an FSP-authored teaching shorthand, not an empirical measurement and not from the ICM paper — but the direction is supported by the industry data above. Fix the 90% you can actually control.
+We use a **60/30/10 heuristic** to prioritize fixes: **60%** traditional structure (naming, organization, file grouping) → **30%** routing (CLAUDE.md, CONTEXT.md, conventions) → **10%** the AI interaction itself. The ratio is adapted from Van Clief's 60/30/10 framework (Quantum Quill Lyceum, Module 2 — originally about system composition: 60% traditional code, 30% rule-based logic, 10% AI calls), re-applied by FSP to prioritizing folder-architecture fixes. It's a teaching shorthand, not an empirical measurement and not from the ICM paper — but the direction is supported by the industry data above. Fix the 90% you can actually control.
 
 It also matters for humans. A well-structured project is easier to navigate, onboard into, and maintain — with or without AI.
 
@@ -418,6 +418,7 @@ Hong, K., Troynikov, A., & Huber, J. (2025, July 14). *Context rot: How increasi
 ### Additional sources
 
 - Clief Notes Module 3: Folder Architecture (Quantum Quill Lyceum) — origin of "Map/Rooms/Tools" metaphors
+- Clief Notes Module 2: The Abstraction Series (Quantum Quill Lyceum) — origin of the 60/30/10 framework (system composition), which FSP adapts to fix prioritization
 - Anthropic. (2025). *Skill authoring best practices*. https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 - [ICM Principles](https://github.com/RinDig/Interpreted-Context-Methdology) — full specification and examples
 

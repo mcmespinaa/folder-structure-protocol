@@ -28,6 +28,8 @@ Every project is evaluated against the **ICM five-layer context hierarchy** (Van
 
 If the structure is bad, no amount of prompt engineering fixes it. Fix the 60% first.
 
+The ratio is adapted from Van Clief's 60/30/10 framework (Quantum Quill Lyceum, Module 2 — originally system composition: 60% traditional code, 30% rule-based logic, 10% AI calls), re-applied here to fix prioritization. Not from the ICM paper.
+
 ### Layer 0: The Map (CLAUDE.md)
 
 The root file that tells any agent — human or AI — where things are.
@@ -438,4 +440,4 @@ Every stage's CONTEXT.md is a contract with four sections:
 - Clief Notes Module 3: Folder Architecture (Quantum Quill Lyceum) — "Map/Rooms/Tools" metaphors
 - Real-world implementations across multiple Claude Code projects
 
-**FSP-authored (not from the above sources):** Scoring rubric (X/16, X/18), letter grading scale (A/B/C/F), 60/30/10 prioritization heuristic, structural metrics (M1–M5), base anti-patterns #1–8
+**FSP-authored (not from the above sources):** Scoring rubric (X/16, X/18), letter grading scale (A/B/C/F), structural metrics (M1–M5), base anti-patterns #1–8. The 60/30/10 ratio is Van Clief's (QQL course, Module 2 — system composition); its application to folder-fix prioritization is FSP's.
