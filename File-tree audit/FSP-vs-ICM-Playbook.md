@@ -369,7 +369,7 @@ Van Clief, J., & McDermott, D. (2026). Interpretable context methodology: Folder
 - Lulla, J. L., et al. (2026). On the impact of AGENTS.md files on the efficiency of AI coding agents. arXiv:2601.20404. https://arxiv.org/abs/2601.20404
 - Böckeler, B. (2026). Context engineering for coding agents. *martinfowler.com*. https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html
 - Qodo. (2025). State of AI code quality 2025. https://www.qodo.ai/reports/state-of-ai-code-quality/
-- Hong, K., Troynikov, A., & Huber, J. (2025). Context rot: How increasing input tokens impacts LLM performance. Chroma Research. https://research.trychroma.com/context-rot
+- Hong, K., Troynikov, A., & Huber, J. (2025). Context rot: How increasing input tokens impacts LLM performance. Chroma Research. https://www.trychroma.com/research/context-rot
 
 **FSP-Authored (not from the above):**
 Scoring rubric (X/16, X/18), letter grading (A/B/C/F), structural metrics (M1–M5), base anti-patterns #1–8, skill implementations. The 60/30/10 ratio is Van Clief's (QQL course, Module 2); its application to folder-fix prioritization is FSP's.

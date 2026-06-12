@@ -30,4 +30,6 @@ This workspace holds the methodology and results for evaluating project folder a
 ## Key Files
 
 - `Playbook - Folder Architecture Evaluation.md` — Full methodology, scoring rubrics, report template
+- `FSP-vs-ICM-Playbook.md` — FSP↔ICM comparison, attribution boundaries, combined playbook
+- `FSP-skill-map.excalidraw` — Skill lifecycle diagram
 - `audits/` — Completed audit reports (`audit-{project-name}-YYYY-MM-DD.md`)

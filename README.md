@@ -388,6 +388,7 @@ folder-structure-protocol/
 | `CLAUDE.md` | Root routing config for this project | Only if cloning the full repo |
 | `File-tree audit/CONTEXT.md` | Workspace context for the audit methodology | Only if cloning the full repo |
 | `File-tree audit/Playbook - *.md` | Deep methodology reference — scoring rationale, pipeline execution, design principles | Optional — for the "why" |
+| `File-tree audit/FSP-vs-ICM-Playbook.md` | FSP↔ICM comparison — what comes from the paper vs. what's FSP-authored | Optional — for attribution boundaries |
 | `File-tree audit/audits/*.md` | Example audit reports from real projects | Optional — to see output |
 
 ## Requirements
@@ -413,7 +414,7 @@ Böckeler, B. (2026, February 5). Context engineering for coding agents. *martin
 
 Qodo. (2025). *State of AI code quality 2025*. https://www.qodo.ai/reports/state-of-ai-code-quality/
 
-Hong, K., Troynikov, A., & Huber, J. (2025, July 14). *Context rot: How increasing input tokens impacts LLM performance*. Chroma Research. https://research.trychroma.com/context-rot
+Hong, K., Troynikov, A., & Huber, J. (2025, July 14). *Context rot: How increasing input tokens impacts LLM performance*. Chroma Research. https://www.trychroma.com/research/context-rot
 
 ### Additional sources
 
