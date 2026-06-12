@@ -610,7 +610,7 @@
       <div class="lifecycle-loop sans">↑ ← ← ← fix and iterate ← ← ← ↑</div>
 
       <h3 style="margin-top: 36px;">The five layers</h3>
-      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0 and 1) are scored on every project. Blue layers (2, 3, and 4) score only if numbered stage folders are detected.</p>
+      <p style="font-size: 14px; color: var(--ink-soft); margin: 0 0 14px;">Green layers (0 and 1) are scored on every project. Blue layers (2, 3, and 4) score only if numbered stage folders are detected. Layer numbering follows the ICM paper; the line budgets (&lt;50, &lt;80) and the placement of the routing table in Layer 0 are FSP conventions — the paper puts task routing in Layer 1.</p>
       <div class="layers">
         <div class="layer base">
           <div class="layer-num">Layer 0</div>
@@ -714,6 +714,7 @@
       <p style="font-size: 14px; color: var(--ink-soft); margin-top: 18px;">Install all five skills into a single project's <code>.claude/skills/</code>.</p>
 <pre class="install"><span class="c"># from your project root</span>
 <span class="p">git</span> clone https://github.com/mcmespinaa/folder-structure-protocol.git /tmp/fsp
+<span class="p">mkdir</span> -p .claude/skills
 <span class="p">cp</span> -r /tmp/fsp/.claude/skills/* .claude/skills/
 <span class="p">rm</span> -rf /tmp/fsp</pre>
     </div>
