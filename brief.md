@@ -4,7 +4,7 @@
 
 ## The problem
 
-I run ~50 projects across Claude Code (in VS Code), Claude.ai, and Obsidian. I also have ADHD, which means my folders drift into chaos faster than I can clean them. Two costs compound:
+I run ~50 projects across Claude Code (in VS Code), Claude.ai, and Obsidian. My folders drift into chaos faster than I can clean them. Two costs compound:
 
 1. **Human cost.** I lose minutes every session re-finding where things live, and onboarding any collaborator into a project means a tour I have to give in person.
 2. **AI cost.** When Claude opens a messy project, it guesses where files are, loads the wrong context, and produces inconsistent output. I used to blame the model. The real problem was structural — the context *before* the model runs.
