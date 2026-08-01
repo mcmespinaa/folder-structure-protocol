@@ -23,12 +23,14 @@ Tools, playbooks, and audits for evaluating project folder architecture against 
 | Validate pipeline contract chain | `.claude/skills/validate-pipeline/` | SKILL.md |
 | Review a stage before advancing | `.claude/skills/stage-review/` | SKILL.md |
 | Understand the methodology | `File-tree audit/` | CONTEXT.md, then Playbook |
+| Write or fix an entry file (CLAUDE.md / AGENTS.md) | `File-tree audit/` | Template - Entry File.md |
 | Review past audits | `File-tree audit/audits/` | Most recent report |
 
 ## Naming Conventions
 
 - **Audit reports:** `audit-{project-name}-YYYY-MM-DD.md`
 - **Playbooks:** `Playbook - {Title}.md`
+- **Templates:** `Template - {Title}.md`
 - **Context files:** `CONTEXT.md` (one per workspace folder)
 - **Skill files:** `SKILL.md` (one per skill in `.claude/skills/{skill-name}/`)
 - **Stage folders:** `{NN}_{stage-name}/` (zero-padded, snake_case)
